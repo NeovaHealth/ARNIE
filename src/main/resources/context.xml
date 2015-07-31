@@ -14,16 +14,17 @@ http://openehealth.org/schema/ipf-commons-core
 http://openehealth.org/schema/ipf-commons-core.xsd">
 
     <camel:camelContext id="camelContext">
+        <camel:jmxAgent id="agent" disabled="true"/>
         <camel:routeBuilder ref="routeBuilder"/>        
     </camel:camelContext>
 
     <bean id="routeBuilder" class="org.openehealth.tutorial.SampleRouteBuilder"/>
 
-	<ipf:globalContext id="globalContext"/>    
+	<ipf:globalContext id="globalContext"/>
 
     <bean id="mappingService"
           class="org.openehealth.ipf.commons.map.BidiMappingService">
-          <property name="mappingScript" value="classpath:/map.groovy"/>
+          <property name="mappingScript" value="classpath:/tutorial.map"/>
     </bean>
 
     <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>

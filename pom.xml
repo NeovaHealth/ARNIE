@@ -21,7 +21,7 @@
         <groovy-eclipse-compiler-version>2.9.0-01</groovy-eclipse-compiler-version>
 
         <!-- versions -->
-        <camel-groovy-version>2.15.2</camel-groovy-version>
+        <camel-groovy-version>2.14.1</camel-groovy-version>
         <ipf-camel-hl7-version>3.0.2</ipf-camel-hl7-version>
 
     </properties>

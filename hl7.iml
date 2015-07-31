@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/context.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
@@ -17,12 +25,19 @@
     <orderEntry type="library" name="Maven: org.openehealth.ipf.platform-camel:ipf-platform-camel-core:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.commons:ipf-commons-core:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.commons:ipf-commons-xml:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:9.6.0-4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:xqj:9.6.0-4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-xml:2.3.7" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy:2.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:2.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.1.5.RELEASE" level="project" />
@@ -35,24 +50,17 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.13" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.commons:ipf-commons-map:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.felix:org.osgi.core:1.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.platform-camel:ipf-platform-camel-hl7:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.modules:ipf-modules-hl7dsl:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-base:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.modules:ipf-modules-hl7:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.3" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:2.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.gazelle:ipf-gazelle-validation-commons-core:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.gazelle:ipf-gazelle-validation-profiles-core:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-hl7:2.15.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-groovy:2.15.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-groovy:2.14.1" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-structures-v22:2.2" level="project" />
-    <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-base:2.2" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-structures-v23:2.2" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-structures-v25:2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.slf4j:slf4j-log4j12:1.7.10" level="project" />
@@ -63,3 +71,4 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>
 </module>
+

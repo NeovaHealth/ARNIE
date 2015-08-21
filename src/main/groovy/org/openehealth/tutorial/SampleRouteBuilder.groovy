@@ -9,6 +9,7 @@ import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
 import org.openehealth.tutorial.SampleRulesBuilder
 
+import static org.apache.camel.component.hl7.HL7.ack
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
 
@@ -39,6 +40,10 @@ class SampleRouteBuilder extends SpringRouteBuilder {
 
         from('direct:input')
                 .unmarshal(hl7)
+                //.onException(Exception.Class)
+                //    .handled(true)
+                 //   .transform(ack())
+                 //   .end()
                 .validate(messageConforms())
                 .transmogrify { msg ->
                     msg.PID[7][1] = msg.PID[7][1].value.substring(0, 8)
@@ -48,18 +53,17 @@ class SampleRouteBuilder extends SpringRouteBuilder {
                     //msg.PV1[8] = ''
                     msg
                 }
-
+                .transform(ack())
                 .setHeader(Exchange.FILE_NAME) { exchange ->
                     exchange.in.body.MSH[4].value + '.hl7'
                 }
-
                 .convertBodyTo(String)
                 .to('file:target/output')
 
 
 
-        from('direct:input1').transmogrify { it * 2 }
-        from('direct:input2')
+        from('direct:inputMultiply').transmogrify { it * 2 }
+        from('direct:inputReverse')
                 .unmarshal(hl7)
                 .reverse()
                 .setHeader(Exchange.FILE_NAME) { exchange ->

@@ -6,7 +6,9 @@ import java.util.Scanner;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.PipeParser;
+import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,26 +40,36 @@ public class SampleRouteTest {
     public void tearDown() throws Exception {
     }
 
+    @EndpointInject(uri = "mock:result")
+    protected MockEndpoint resultEndpoint;
+
     @Test
-    public void testTest(){
+    public void testTest() {
         assertEquals(1, 1);
     }
 
+    @Test
+    public void ackTest() throws Exception{
+        Resource input = new ClassPathResource("/msg-01.hl7");
+        producerTemplate.sendBody("direct:input", input.getInputStream());
+        resultEndpoint.expectedBodiesReceived("ACK");
+        resultEndpoint.assertIsSatisfied();
+    }
 
     @Test
     public void testMultiply() throws Exception {
-        assertEquals("abcabc", producerTemplate.requestBody("direct:input1", "abc"));
+        assertEquals("abcabc", producerTemplate.requestBody("direct:inputMultiply", "abc"));
     }
     
     //@Test
     public void testReverse() throws Exception {
-        assertEquals("cba", producerTemplate.requestBody("direct:input2", "abc"));
+        assertEquals("cba", producerTemplate.requestBody("direct:inputReverse", "abc"));
     }
 
     //@Test
     public void testMessageReverse() throws Exception {
         Resource input = new ClassPathResource("/msg-01.hl7");
-        producerTemplate.sendBody("direct:input2", input.getInputStream().toString());
+        producerTemplate.sendBody("direct:inputReverse", input.getInputStream().toString());
         String result = new StringBuilder(new ClassPathResource("target/output/file.reverse").toString()).reverse().toString();
         assertEquals(input.toString(), result);
     }

@@ -2,6 +2,8 @@ package org.openehealth.tutorial
 
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
+import ca.uhn.hl7v2.Version
+import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.Exchange
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
@@ -16,6 +18,17 @@ class SampleRouteBuilder extends SpringRouteBuilder {
 
         HapiContext context = new DefaultHapiContext(lookup(SampleRulesBuilder))
         context.getParserConfiguration().setValidating(false)
+
+        ValidationRuleBuilder builder = new ValidationRuleBuilder(){
+            @Override
+            protected void configure(){
+                forVersion(Version.V22)
+                .message("ADT", "A01")
+                .terser("PID-8", not(empty()));
+            }
+        };
+
+        context.setValidationRuleBuilder(builder);
 
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)

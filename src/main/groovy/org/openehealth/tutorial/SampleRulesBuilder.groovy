@@ -4,8 +4,6 @@ package org.openehealth.tutorial
 import ca.uhn.hl7v2.validation.builder.support.NoValidationBuilder
 import org.openehealth.ipf.modules.hl7.validation.DefaultValidationContext
 import org.openehealth.ipf.modules.hl7.validation.builder.RuleBuilder
-import org.openehealth.ipf.modules.hl7.validation.builder.ValidationContextBuilder
-
 
 /**
  * Created by gregorlenz on 05/07/2015.

@@ -1,5 +1,6 @@
 package org.openehealth.tutorial;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -33,23 +34,20 @@ public class SampleRouteTest {
     private ProducerTemplate producerTemplate;
     
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
+        //something happens beforehand
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
+        //something happens afterwards
     }
 
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint resultEndpoint;
 
     @Test
-    public void testTest() {
-        assertEquals(1, 1);
-    }
-
-    @Test
-    public void ackTest() throws Exception{
+    public void ackTest() throws IOException, InterruptedException{
         Resource input = new ClassPathResource("/msg-01.hl7");
         producerTemplate.sendBody("direct:input", input.getInputStream());
         resultEndpoint.expectedBodiesReceived("ACK");
@@ -67,7 +65,7 @@ public class SampleRouteTest {
     }
 
     //@Test
-    public void testMessageReverse() throws Exception {
+    public void testMessageReverse() throws IOException {
         Resource input = new ClassPathResource("/msg-01.hl7");
         producerTemplate.sendBody("direct:inputReverse", input.getInputStream().toString());
         String result = new StringBuilder(new ClassPathResource("target/output/file.reverse").toString()).reverse().toString();
@@ -75,7 +73,7 @@ public class SampleRouteTest {
     }
 
     @Test
-    public void testRoute() throws Exception {
+    public void testRoute() throws IOException, HL7Exception {
         Resource input = new ClassPathResource("/msg-01.hl7");
         producerTemplate.sendBody("direct:input", input.getInputStream());
         Resource result = new FileSystemResource("target/output/HZL.hl7");

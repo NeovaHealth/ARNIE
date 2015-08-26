@@ -7,7 +7,6 @@ import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.Exchange
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
-import org.openehealth.tutorial.SampleRulesBuilder
 
 import static org.apache.camel.component.hl7.HL7.ack
 import static org.apache.camel.component.hl7.HL7.messageConforms
@@ -53,7 +52,7 @@ class SampleRouteBuilder extends SpringRouteBuilder {
                     //msg.PV1[8] = ''
                     msg
                 }
-                .transform(ack())
+                //.transform(ack())
                 .setHeader(Exchange.FILE_NAME) { exchange ->
                     exchange.in.body.MSH[4].value + '.hl7'
                 }

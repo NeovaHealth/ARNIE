@@ -12,7 +12,7 @@ import static org.apache.camel.component.hl7.HL7.ack
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
 
-class SampleRouteBuilder extends SpringRouteBuilder {
+class ADTRouting extends SpringRouteBuilder {
 
     void configure() {
 
@@ -32,6 +32,28 @@ class SampleRouteBuilder extends SpringRouteBuilder {
 
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
+
+        String hl7listener = "hl7listener"
+        String inputQueue = "activemq-in"
+        String admit = "admit"
+
+        Boolean switcher = true
+
+        from(hl7listener)
+            .choice()
+                .when(switcher)
+                    .to(inputQueue)
+                .otherwise
+                    .stop()
+
+        from(inputQueue)
+            .unmarshal(hl7)
+            //attach routing slip to header
+
+
+
+
+
 
         from('file:target/input')
                 .convertBodyTo(String)

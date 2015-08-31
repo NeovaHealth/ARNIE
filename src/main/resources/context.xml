@@ -18,7 +18,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd">
         <camel:routeBuilder ref="routeBuilder"/>        
     </camel:camelContext>
 
-    <bean id="routeBuilder" class="org.openehealth.tutorial.SampleRouteBuilder"/>
+    <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
 
 	<ipf:globalContext id="globalContext"/>
 

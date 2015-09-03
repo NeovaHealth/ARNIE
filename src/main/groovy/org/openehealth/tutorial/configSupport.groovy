@@ -1,17 +1,10 @@
 package org.openehealth.tutorial
 
 /**
- * Created by gregorlenz on 31/08/15.
+ * Created by gregorlenz on 01/09/15.
  */
 
-import groovy.util.ConfigSlurper
 
-class configSupport {
+final ConfigObject configFile = new ConfigSlurper().parse(new File("/home/gregorlenz/Development/ipf-hl7/src/main/resources/config.txt").toURI().toURL())
 
-    final ConfigObject configFile = new ConfigSlurper().parse(new File("/config.txt").toURI().toURL())
-
-
-    println configFile.autoAck
-
-
-}
+println(configFile)

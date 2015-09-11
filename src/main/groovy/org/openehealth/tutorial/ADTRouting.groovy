@@ -33,31 +33,53 @@ class ADTRouting extends SpringRouteBuilder {
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
 
-        String hl7listener = "hl7listener"
-        String inputQueue = "activemq-in"
-        String admit = "admit"
+        String hl7listener = "direct:hl7listener"
+        String inputQueue = "direct:activemq-in"
+        String admit = "direct:admit"
+        String transfer = "direct:transfer"
+        String discharge = "direct:discharge"
+        String updatePatient = "direct:updatePatient"
+        String updateVisit = "direct:updateVisit"
 
-        Boolean switcher = true
+        String hl7router = "direct:hl7router"
 
         from(hl7listener)
-            .choice()
-                .when(switcher)
-                    .to(inputQueue)
-                .otherwise
-                    .stop()
+            //.to(inputQueue)
+            .to(hl7router)
+
+        from(hl7router)
+            .unmarshal(hl7)
+            .validate(messageConforms())
+            .bean(ComputeRoutingSlip)
+
 
         from(inputQueue)
-            .unmarshal(hl7)
-            //attach routing slip to header
+            //.unmarshal(hl7)
+            //.setHeader("myRoute").method(ComputeRoutingSlip)
+            //.routingSlip("myRoute")
+            .bean(ComputeRoutingSlip)
+
+        from(admit)
+            .transform({it -> it})
+
+        from(transfer)
+            .transform({it -> it})
+
+        from(discharge)
+            .transform({it -> it})
+
+        from(updatePatient)
+            .stop()
 
 
 
 
 
-
+        /*
         from('file:target/input')
                 .convertBodyTo(String)
                 .to('direct:input')
+           */
 
         from('direct:input')
                 .unmarshal(hl7)

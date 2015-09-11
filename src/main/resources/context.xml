@@ -15,10 +15,13 @@ http://openehealth.org/schema/ipf-commons-core.xsd">
 
     <camel:camelContext id="camelContext">
         <camel:jmxAgent id="agent" disabled="true"/>
-        <camel:routeBuilder ref="routeBuilder"/>        
+        <camel:routeBuilder ref="routeBuilder"/>
+        <!--<camel:routes maybe? -->
     </camel:camelContext>
 
     <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
+
+    <bean id="routingSlip" class="org.openehealth.tutorial.ComputeRoutingSlip"/>
 
 	<ipf:globalContext id="globalContext"/>
 
@@ -29,4 +32,12 @@ http://openehealth.org/schema/ipf-commons-core.xsd">
 
     <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>
 
+    <!--
+    <camel:route id="admit" >
+        <camel:from uri="direct:hl7listener"/>
+        <camel:to uri="direct:admit"/>
+    </camel:route>
+    -->
+
 </beans>
+

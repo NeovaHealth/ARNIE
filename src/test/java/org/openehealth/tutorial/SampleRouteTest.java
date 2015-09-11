@@ -25,9 +25,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
-@ContextConfiguration(locations = { "/context.xml" })
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
+//@ContextConfiguration(locations = { "/context.xml" })
 public class SampleRouteTest {
 
     @Autowired
@@ -43,6 +43,7 @@ public class SampleRouteTest {
         //something happens afterwards
     }
 
+    /*
     @EndpointInject(uri = "mock:result")
     protected MockEndpoint resultEndpoint;
 
@@ -86,4 +87,6 @@ public class SampleRouteTest {
         return (T)new PipeParser().parse(
                 new Scanner(is).useDelimiter("\\A").next());
     }
+    */
+
 }

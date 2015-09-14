@@ -41,6 +41,9 @@ public class ADTTest extends CamelSpringTestSupport {
         return new ClassPathXmlApplicationContext("/context.xml");
     }
 
+    @Autowired
+    private ProducerTemplate producerTemplate;
+
     @Override
     public String isMockEndpointsAndSkip(){
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient))";

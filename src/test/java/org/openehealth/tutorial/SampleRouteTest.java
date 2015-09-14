@@ -30,8 +30,8 @@ import static org.junit.Assert.assertEquals;
 //@ContextConfiguration(locations = { "/context.xml" })
 public class SampleRouteTest {
 
-    @Autowired
-    private ProducerTemplate producerTemplate;
+    //@Autowired
+    //private ProducerTemplate producerTemplate;
     
     @Before
     public void setUp(){

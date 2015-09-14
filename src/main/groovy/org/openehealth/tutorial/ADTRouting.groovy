@@ -19,6 +19,7 @@ class ADTRouting extends SpringRouteBuilder {
         HapiContext context = new DefaultHapiContext(lookup(SampleRulesBuilder))
         context.getParserConfiguration().setValidating(false)
 
+
         ValidationRuleBuilder builder = new ValidationRuleBuilder(){
             @Override
             protected void configure(){
@@ -29,6 +30,7 @@ class ADTRouting extends SpringRouteBuilder {
         };
 
         context.setValidationRuleBuilder(builder);
+
 
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
@@ -50,6 +52,7 @@ class ADTRouting extends SpringRouteBuilder {
         from(hl7router)
             .unmarshal(hl7)
             .validate(messageConforms())
+            //.setHeader(hl7)
             .bean(ComputeRoutingSlip)
 
 

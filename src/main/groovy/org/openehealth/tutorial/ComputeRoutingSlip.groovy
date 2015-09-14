@@ -7,8 +7,10 @@ import ca.uhn.hl7v2.model.Message
 import ca.uhn.hl7v2.model.v22.message.ADT_A01
 import ca.uhn.hl7v2.model.v22.message.ADT_AXX
 import ca.uhn.hl7v2.model.v22.segment.MSH
-import ca.uhn.hl7v2.parser.Parser;
+import ca.uhn.hl7v2.parser.Parser
+import org.apache.camel.Header;
 import org.apache.camel.RoutingSlip
+import org.apache.camel.component.hl7.HL7DataFormat
 import sun.security.pkcs.EncodingException;
 
 /**
@@ -18,7 +20,7 @@ public class ComputeRoutingSlip {
 
 
     @RoutingSlip
-    String messageSteps(Message inflightmsg) {
+    String messageSteps(Message inflightmsg, @Header("ContextHeader") HL7DataFormat contex) {
         HapiContext hapictx = new DefaultHapiContext()
 
         Parser p = hapictx.getGenericParser()
@@ -26,22 +28,22 @@ public class ComputeRoutingSlip {
         Message hapimsg
 
         try{
-            hapimsg = p.parse(inflightmsg)
+            hapimsg = p.parse(inflightmsg.toString())
         } catch (EncodingException e) {
             e.printStackTrace()
         }
 
-        ADT_AXX adt_axx = (ADT_AXX) hapimsg;
+        String version = hapimsg.getVersion()
 
-        ADT_A01 adt_a01 = (ADT_A01) inflightmsg;
+        ADT_A01 adt_a01 = (ADT_A01) hapimsg
 
-        try{
-            MSH msh = adt_axx.getMSH()
-        }
+        MSH msh = adt_a01.getMSH()
 
-        catch (HL7Exception e) {
-            e.printStackTrace()
-            return
+        String msgType = msh.getMessageType().getMessageType().getValue()
+        String msgTrigger = msh.getMessageType().getTriggerEvent().getValue()
+
+        for (int i=0; i<100; i++){
+            System.out.println(msgType + " " + msgTrigger)
         }
         return "direct:admit, direct:updatePatient"
     }

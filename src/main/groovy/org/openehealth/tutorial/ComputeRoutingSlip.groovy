@@ -35,9 +35,7 @@ public class ComputeRoutingSlip {
 
         String version = hapimsg.getVersion()
 
-        ADT_A01 adt_a01 = (ADT_A01) hapimsg
-
-        MSH msh = adt_a01.getMSH()
+        MSH msh = hapimsg.getMSH()
 
         String msgType = msh.getMessageType().getMessageType().getValue()
         String msgTrigger = msh.getMessageType().getTriggerEvent().getValue()
@@ -45,7 +43,13 @@ public class ComputeRoutingSlip {
         for (int i=0; i<100; i++){
             System.out.println(msgType + " " + msgTrigger)
         }
-        return "direct:admit, direct:updatePatient"
+
+        switch (msgTrigger){
+            case 'A01': return "direct:admit";
+            case 'A02': return "direct:transfer";
+            case 'A03': return "direct:discharge";
+            default: return
+        }
     }
 
     /*

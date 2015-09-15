@@ -10,6 +10,7 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.io.IOException;
 /**
  * Created by gregorlenz on 31/08/15.
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = { "/context.xml" })
@@ -49,14 +51,7 @@ public class ADTTest extends CamelSpringTestSupport {
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient))";
     }
 
-    //@Autowired
-    //protected CamelContext camelContext;
-
-    //private ProducerTemplate producerTemplate;
-
-    //
-
-    @Test
+    //@Test
     public void testRoutingSlip1() throws InterruptedException {
         int message = 1;
 
@@ -76,7 +71,7 @@ public class ADTTest extends CamelSpringTestSupport {
         assertMockEndpointsSatisfied();
     }
 
-    @Test
+    //@Test
     public void testRoutingSlip2() throws InterruptedException {
         int message = 2;
 
@@ -99,11 +94,18 @@ public class ADTTest extends CamelSpringTestSupport {
     }
 
     @Test
-    public void testHL7message() throws IOException {
+    public void testHL7message() throws IOException, InterruptedException {
         Resource input  = new ClassPathResource("/msg-01.hl7");
+
+        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
+        admitEndpoint.expectedMessageCount(1);
+
+        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer");
+        transferEndpoint.expectedMessageCount(0);
 
         template.sendBody("direct:hl7listener", input.getInputStream());
 
+        assertMockEndpointsSatisfied();
     }
 
 

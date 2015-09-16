@@ -8,9 +8,7 @@ import org.apache.camel.Exchange
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
 
-import static org.apache.camel.component.hl7.HL7.ack
 import static org.apache.camel.component.hl7.HL7.messageConforms
-
 
 class ADTRouting extends SpringRouteBuilder {
 
@@ -72,7 +70,10 @@ class ADTRouting extends SpringRouteBuilder {
             .transform({it -> it})
 
         from(updatePatient)
-            .stop()
+            .transform({it -> it})
+
+        from(updateVisit)
+            .transform({it -> it})
 
 
 

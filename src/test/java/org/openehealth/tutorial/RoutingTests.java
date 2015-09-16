@@ -1,27 +1,12 @@
 package org.openehealth.tutorial;
 
-import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.HL7Exception;
-import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.parser.PipeParser;
-import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringTestSupport;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -37,18 +22,18 @@ import java.io.IOException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = { "/context.xml" })
-public class ADTTest extends CamelSpringTestSupport {
+public class RoutingTests extends CamelSpringTestSupport {
 
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("/context.xml");
     }
 
-    @Autowired
-    private ProducerTemplate producerTemplate;
+    //@Autowired
+    //private ProducerTemplate producerTemplate;
 
     @Override
     public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient))";
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate))";
     }
 
     //@Test
@@ -94,8 +79,11 @@ public class ADTTest extends CamelSpringTestSupport {
     }
 
     @Test
-    public void testHL7message() throws IOException, InterruptedException {
+    public void testA01() throws IOException, InterruptedException {
         Resource input  = new ClassPathResource("/msg-01.hl7");
+        //def messageString = mak
+        //String input = testMessages.getTestA01();
+        //log.info(input);
 
         MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
         admitEndpoint.expectedMessageCount(1);
@@ -104,9 +92,27 @@ public class ADTTest extends CamelSpringTestSupport {
         transferEndpoint.expectedMessageCount(0);
 
         template.sendBody("direct:hl7listener", input.getInputStream());
-
+        log.info("Sent A01");
         assertMockEndpointsSatisfied();
     }
+
+    @Test
+    public void testA08() throws InterruptedException, IOException {
+        Resource input = new ClassPathResource("/msg-08.hl7");
+
+        MockEndpoint visitUpdateEndpoint = getMockEndpoint("mock:direct:visitUpdate");
+        visitUpdateEndpoint.expectedMessageCount(1);
+
+        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
+        admitEndpoint.expectedMessageCount(0);
+
+        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer");
+        transferEndpoint.expectedMessageCount(0);
+
+        template.sendBody("direct:hl7listener", input.getInputStream());
+        assertMockEndpointsSatisfied();
+    }
+
 
 
     /*

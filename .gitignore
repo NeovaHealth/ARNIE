@@ -1,2 +1,7 @@
 /target
 .idea
+.project
+.settings/
+hl7.iml
+logs.txt
+ARNIE.iml

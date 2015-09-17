@@ -62,6 +62,7 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(admit)
             .transform({it -> it})
+            .to(msgHistory)
 
         from(transfer)
             .transform({it -> it})
@@ -75,15 +76,6 @@ class ADTRouting extends SpringRouteBuilder {
         from(updateVisit)
             .transform({it -> it})
 
-
-
-
-
-        /*
-        from('file:target/input')
-                .convertBodyTo(String)
-                .to('direct:input')
-           */
 
         from('direct:input')
                 .unmarshal(hl7)

@@ -30,14 +30,17 @@ http://openehealth.org/schema/ipf-commons-core.xsd">
           <property name="mappingScript" value="classpath:/tutorial.map"/>
     </bean>
 
-    <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>
+    <!--SQL -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://nhadt:5432/nhadt"/>
+        <property name="username" value="nhadt"/>
+        <property name="password" value="nhadt"/>
+    </bean>
 
-    <!--
-    <camel:route id="admit" >
-        <camel:from uri="direct:hl7listener"/>
-        <camel:to uri="direct:admit"/>
-    </camel:route>
-    -->
+    <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (id, type, hospital_number,visit_id,timestamp, data) values (:#CamelHL7MessageControl,:#CamelHL7TriggerEvent,:#hospitalNoString,:#visitNameString,:#CamelHL7Timestamp,:#msgBody)"/>
+
+    <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>
 
 </beans>
 

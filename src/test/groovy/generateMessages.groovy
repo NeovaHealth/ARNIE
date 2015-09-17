@@ -1,15 +1,16 @@
 /**
  * Created by gregorlenz on 16/09/15.
  */
-
-
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
+import ca.uhn.hl7v2.model.v24.message.ADT_A02
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.openehealth.ipf.modules.hl7.model.AbstractMessage
+import org.openehealth.ipf.modules.hl7dsl.MessageAdapter
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.core.io.ClassPathResource
@@ -34,14 +35,24 @@ class generateMessages extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate))";
     }
 
+    @Test
+    public void testA01() throws IOException, InterruptedException {
+        Resource input  = new ClassPathResource("/msg-01.hl7")
+
+        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit")
+        admitEndpoint.expectedMessageCount(1)
+
+        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer")
+        transferEndpoint.expectedMessageCount(0)
+
+        template.sendBody("direct:hl7listener", input.getInputStream())
+        log.info("Sent A01")
+        assertMockEndpointsSatisfied()
+    }
 
     @Test
-    public void testA08() throws InterruptedException, IOException {
+    void testA08() throws InterruptedException, IOException {
         Resource input = new ClassPathResource("/msg-08.hl7");
-
-        HapiContext hapiContext = new DefaultHapiContext()
-        def A02 = Message.ADT_A02('2.4')
-
 
         MockEndpoint visitUpdateEndpoint = getMockEndpoint("mock:direct:visitUpdate");
         visitUpdateEndpoint.expectedMessageCount(1);

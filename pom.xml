@@ -80,6 +80,16 @@
             <version>${camel-groovy-version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-sql</artifactId>
+            <version>${camel-groovy-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.3-1103-jdbc41</version>
+        </dependency>
+        <dependency>
             <groupId>ca.uhn.hapi</groupId>
             <artifactId>hapi-structures-v22</artifactId>
             <version>2.2</version>
@@ -91,14 +101,25 @@
         </dependency>
         <dependency>
             <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v24</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
             <artifactId>hapi-structures-v25</artifactId>
             <version>2.2</version>
         </dependency>
         <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v26</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <!--
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-
+        -->
         <!-- dependencies for test -->
         <dependency>
             <groupId>org.codehaus.mojo</groupId>

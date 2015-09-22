@@ -2,20 +2,21 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:lang="http://www.springframework.org/schema/lang"
        xmlns:camel="http://camel.apache.org/schema/spring"
-       xmlns:ipf="http://openehealth.org/schema/ipf-commons-core"       
-       xsi:schemaLocation="
-http://www.springframework.org/schema/beans 
+       xmlns:ipf="http://openehealth.org/schema/ipf-commons-core"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
-http://www.springframework.org/schema/lang 
+http://www.springframework.org/schema/lang
 http://www.springframework.org/schema/lang/spring-lang.xsd
-http://camel.apache.org/schema/spring 
+http://camel.apache.org/schema/spring
 http://camel.apache.org/schema/spring/camel-spring.xsd
 http://openehealth.org/schema/ipf-commons-core
-http://openehealth.org/schema/ipf-commons-core.xsd">
+http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <camel:camelContext id="camelContext">
         <camel:jmxAgent id="agent" disabled="true"/>
         <camel:routeBuilder ref="routeBuilder"/>
+
         <!--<camel:routes maybe? -->
     </camel:camelContext>
 
@@ -30,15 +31,32 @@ http://openehealth.org/schema/ipf-commons-core.xsd">
           <property name="mappingScript" value="classpath:/tutorial.map"/>
     </bean>
 
-    <!--SQL -->
+
+
+    <!--SQL
+    org.apache.commons.dbcp.BasicDataSource
+    org.springframework.jdbc.datasource.DriverManagerDataSource
+
+    org.postgresql.Driver
+    -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://nhadt:5432/nhadt"/>
+        <property name="driverClassName" value="net.sf.log4jdbc.DriverSpy"/>
+        <property name="url" value="jdbc:log4jdbc:postgresql://localhost:5432/nhadt"/>
         <property name="username" value="nhadt"/>
         <property name="password" value="nhadt"/>
     </bean>
 
-    <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (id, type, hospital_number,visit_id,timestamp, data) values (:#CamelHL7MessageControl,:#CamelHL7TriggerEvent,:#hospitalNoString,:#visitNameString,:#CamelHL7Timestamp,:#msgBody)"/>
+    <bean id="sql" class="org.apache.camel.component.sql.SqlComponent">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+    <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (hospital_number) values (234567)"/>
+    <!-- sql:insert into msg_history (id, type, hospital_number,visit_id,timestamp, data) values (3,'A55',234567,'Hospitalnumber,01012013,'TestData')  -->
+    <!--
+    sql:SELECT * FROM msg_history
+    -->
+
 
     <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>
 

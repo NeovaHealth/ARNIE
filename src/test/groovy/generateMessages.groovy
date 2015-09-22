@@ -32,7 +32,7 @@ class generateMessages extends CamelSpringTestSupport{
 
     @Override
     public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate))";
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging))";
     }
 
     @Test
@@ -65,6 +65,16 @@ class generateMessages extends CamelSpringTestSupport{
 
         template.sendBody("direct:hl7listener", input.getInputStream());
         assertMockEndpointsSatisfied();
+    }
+
+    @Test
+    void testPostgres() {
+        Resource input = new ClassPathResource("/msg-08.hl7")
+
+        MockEndpoint msgHistory = getMockEndpoint("mock:direct:msgLogging")
+        msgHistory.expectedMessageCount(1)
+
+        template.sendBody("direct:msgLogging", input.getInputStream())
     }
 
 }

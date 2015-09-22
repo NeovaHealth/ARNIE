@@ -41,6 +41,8 @@ class ADTRouting extends SpringRouteBuilder {
         String updatePatient = "direct:updatePatient"
         String updateVisit = "direct:updateVisit"
 
+        String msgLogging = "direct:msgLogging"
+        String msgHistory = "msgHistory"
         String hl7router = "direct:hl7router"
 
         from(hl7listener)
@@ -62,7 +64,7 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(admit)
             .transform({it -> it})
-            .to(msgHistory)
+
 
         from(transfer)
             .transform({it -> it})
@@ -75,6 +77,12 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(updateVisit)
             .transform({it -> it})
+
+        from(msgLogging)
+            //.to("jdbc:datasource")
+            //.to("sql:SELECT * FROM msg_history")
+            .unmarshal(hl7)
+            .to(msgHistory)
 
 
         from('direct:input')

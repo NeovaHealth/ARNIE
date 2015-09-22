@@ -75,6 +75,7 @@ class generateMessages extends CamelSpringTestSupport{
         msgHistory.expectedMessageCount(1)
 
         template.sendBody("direct:msgLogging", input.getInputStream())
+        assertMockEndpointsSatisfied()
     }
 
 }

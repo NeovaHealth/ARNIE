@@ -6,11 +6,12 @@ import ca.uhn.hl7v2.Version
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.Exchange
 import org.apache.camel.component.hl7.HL7DataFormat
+import org.apache.camel.spring.SpringCamelContext
 import org.apache.camel.spring.SpringRouteBuilder
 
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
-class ADTRouting extends SpringRouteBuilder {
+class ADTRouting extends SpringRouteBuilder{
 
     void configure() {
 
@@ -42,7 +43,7 @@ class ADTRouting extends SpringRouteBuilder {
         String updateVisit = "direct:updateVisit"
 
         String msgLogging = "direct:msgLogging"
-        String msgHistory = "msgHistory"
+        //String msgHistory = "msgHistory"
         String hl7router = "direct:hl7router"
 
         from(hl7listener)
@@ -53,7 +54,8 @@ class ADTRouting extends SpringRouteBuilder {
             .unmarshal(hl7)
             .validate(messageConforms())
             //.setHeader(hl7)
-            .bean(ComputeRoutingSlip)
+            .to(routingSlip)
+            //.bean(ComputeRoutingSlip)
 
 
         from(inputQueue)
@@ -79,10 +81,15 @@ class ADTRouting extends SpringRouteBuilder {
             .transform({it -> it})
 
         from(msgLogging)
-            //.to("jdbc:datasource")
-            //.to("sql:SELECT * FROM msg_history")
-            .unmarshal(hl7)
-            .to(msgHistory)
+        //.to("jdbc:datasource")
+            //.setHeader("lic", constant("ASF"))
+            //.setHeader("min", constant(123))
+            //.setBody("select * from msg_history;")
+            //.to("jdbc:dataSource?useHeadersAsParameters=true")
+            .to("sql:SELECT * FROM msg_history")
+            //.unmarshal(hl7)
+            //.to(msgHistory)
+            .marshal(hl7)
 
 
         from('direct:input')

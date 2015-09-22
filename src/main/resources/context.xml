@@ -17,8 +17,14 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
         <camel:jmxAgent id="agent" disabled="true"/>
         <camel:routeBuilder ref="routeBuilder"/>
 
+        <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (hospital_number) values (234567)"/>
+
         <!--<camel:routes maybe? -->
     </camel:camelContext>
+
+    <!--
+    <camel:endpoint id="testEndpoint"/>
+    -->
 
     <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
 
@@ -39,7 +45,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
 
     org.postgresql.Driver
     -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="net.sf.log4jdbc.DriverSpy"/>
         <property name="url" value="jdbc:log4jdbc:postgresql://localhost:5432/nhadt"/>
         <property name="username" value="nhadt"/>
@@ -51,7 +57,6 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
     </bean>
 
 
-    <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (hospital_number) values (234567)"/>
     <!-- sql:insert into msg_history (id, type, hospital_number,visit_id,timestamp, data) values (3,'A55',234567,'Hospitalnumber,01012013,'TestData')  -->
     <!--
     sql:SELECT * FROM msg_history

@@ -10,6 +10,7 @@
         <!--<camel:routes maybe? -->
     </camel:camelContext>
 
+    <!--
     <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
-
+    -->
 </beans>

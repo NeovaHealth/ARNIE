@@ -21,6 +21,7 @@
         <groovy-eclipse-compiler-version>2.9.0-01</groovy-eclipse-compiler-version>
 
         <!-- versions -->
+        <camel-version>2.15.3</camel-version>
         <camel-groovy-version>2.14.1</camel-groovy-version>
         <ipf-camel-hl7-version>3.0.2</ipf-camel-hl7-version>
 
@@ -43,12 +44,12 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
-            <version>2.15.3</version>
+            <version>${camel-version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-test-spring</artifactId>
-            <version>2.15.3</version>
+            <version>${camel-version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -103,6 +104,16 @@
             <groupId>com.googlecode.log4jdbc</groupId>
             <artifactId>log4jdbc</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jdbc</artifactId>
+            <version>${camel-version}</version>
         </dependency>
 
         <!-- supported HL7 versions-->
@@ -176,12 +187,15 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!-- -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.12</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>

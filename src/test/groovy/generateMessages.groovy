@@ -29,7 +29,6 @@ class generateMessages extends CamelSpringTestSupport{
         return new ClassPathXmlApplicationContext("/context.xml");
     }
 
-
     @Override
     public String isMockEndpointsAndSkip(){
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging))";

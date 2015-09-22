@@ -3,6 +3,7 @@ package org.openehealth.tutorial
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.Version
+import ca.uhn.hl7v2.model.Message
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.Exchange
 import org.apache.camel.component.hl7.HL7DataFormat
@@ -34,6 +35,7 @@ class ADTRouting extends SpringRouteBuilder{
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
 
+        String testString = "works"
         String hl7listener = "direct:hl7listener"
         String inputQueue = "direct:activemq-in"
         String admit = "direct:admit"
@@ -43,19 +45,20 @@ class ADTRouting extends SpringRouteBuilder{
         String updateVisit = "direct:updateVisit"
 
         String msgLogging = "direct:msgLogging"
-        //String msgHistory = "msgHistory"
+        String msgHistory = "msgHistory"
         String hl7router = "direct:hl7router"
 
         from(hl7listener)
-            //.to(inputQueue)
+            .unmarshal(hl7)
+            .setHeader("triggerEvent", {inbound -> inbound.in.body.getTriggerEvent()})
+            .setHeader("visitNameString", {inbound -> inbound.in.body.MSH[4].toString()})
+            //.setHeader("data", {inbound -> inbound.in[Message].toString()})
             .to(hl7router)
 
         from(hl7router)
-            .unmarshal(hl7)
             .validate(messageConforms())
-            //.setHeader(hl7)
-            .to(routingSlip)
-            //.bean(ComputeRoutingSlip)
+            .to("routingSlip")
+            .to("msgHistory")
 
 
         from(inputQueue)
@@ -81,15 +84,8 @@ class ADTRouting extends SpringRouteBuilder{
             .transform({it -> it})
 
         from(msgLogging)
-        //.to("jdbc:datasource")
-            //.setHeader("lic", constant("ASF"))
-            //.setHeader("min", constant(123))
-            //.setBody("select * from msg_history;")
-            //.to("jdbc:dataSource?useHeadersAsParameters=true")
-            .to("sql:SELECT * FROM msg_history")
-            //.unmarshal(hl7)
-            //.to(msgHistory)
-            .marshal(hl7)
+            .unmarshal(hl7)
+            .to(msgHistory)
 
 
         from('direct:input')

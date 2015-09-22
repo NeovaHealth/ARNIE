@@ -1,7 +1,5 @@
 package org.openehealth.tutorial
 
-import ca.uhn.hl7v2.DefaultHapiContext
-import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
 import org.apache.camel.RoutingSlip
 
@@ -11,9 +9,9 @@ import org.apache.camel.RoutingSlip
 public class ComputeRoutingSlip {
 
     @RoutingSlip
-    String messageSteps(Message inflightmsg) {
+    String messageSteps(Message inboundMsg) {
 
-        String msgTrigger = inflightmsg.getTriggerEvent()
+        String msgTrigger = inboundMsg.getTriggerEvent()
 
         //HapiContext hapiContext = new DefaultHapiContext()
 

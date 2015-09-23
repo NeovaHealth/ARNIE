@@ -19,11 +19,12 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
+import messageGenerator
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 @ContextConfiguration(locations = ["/context.xml"])
-class generateMessages extends CamelSpringTestSupport{
+class routingTest extends CamelSpringTestSupport{
 
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("/context.xml");
@@ -31,7 +32,7 @@ class generateMessages extends CamelSpringTestSupport{
 
     @Override
     public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging))";
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
     @Test
@@ -56,6 +57,9 @@ class generateMessages extends CamelSpringTestSupport{
         MockEndpoint visitUpdateEndpoint = getMockEndpoint("mock:direct:visitUpdate");
         visitUpdateEndpoint.expectedMessageCount(1);
 
+        MockEndpoint patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
+        patientUpdateEndpoint.expectedMessageCount(1)
+
         MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
         admitEndpoint.expectedMessageCount(0);
 
@@ -75,6 +79,19 @@ class generateMessages extends CamelSpringTestSupport{
 
         template.sendBody("direct:msgLogging", input.getInputStream())
         assertMockEndpointsSatisfied()
+
+    }
+
+    //@Test
+    void messageGeneratorTest() {
+        assert messageGenerator.getA01().getClass().is(Message)
+
+    }
+
+    //@Test
+    void msgGeneratorTest(){
+        Message thisA01 = messageGenerator.getA01()
+        assert thisA01.getClass().is(Message)
     }
 
 }

@@ -7,4 +7,8 @@ package org.openehealth.tutorial
 
 final ConfigObject configFile = new ConfigSlurper().parse(new File("/home/gregorlenz/Development/ipf-hl7/src/main/resources/config.txt").toURI().toURL())
 
+final family_name = configFile.common.family_name
+
+println(family_name)
 println(configFile)
+

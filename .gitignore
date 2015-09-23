@@ -6,3 +6,5 @@ hl7.iml
 logs.txt
 ARNIE.iml
 /ARNIE.iml
+sonar-project.properties
+.sonar

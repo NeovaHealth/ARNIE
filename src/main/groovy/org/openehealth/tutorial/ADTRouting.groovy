@@ -41,13 +41,14 @@ class ADTRouting extends SpringRouteBuilder{
         String admit = "direct:admit"
         String transfer = "direct:transfer"
         String discharge = "direct:discharge"
-        String updatePatient = "direct:updatePatient"
+        String updatePatient = "direct:updateOrCreatePatient"
         String updateVisit = "direct:updateVisit"
 
         String msgLogging = "direct:msgLogging"
         String msgHistory = "msgHistory"
         String hl7router = "direct:hl7router"
 
+        //entry point
         from(hl7listener)
             .unmarshal(hl7)
             .setHeader("triggerEvent", {inbound -> inbound.in.body.getTriggerEvent()})
@@ -58,7 +59,6 @@ class ADTRouting extends SpringRouteBuilder{
         from(hl7router)
             .validate(messageConforms())
             .to("routingSlip")
-            .to("msgHistory")
 
 
         from(inputQueue)

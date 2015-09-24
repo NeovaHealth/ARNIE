@@ -63,4 +63,12 @@ public class messageGenerator {
         assert msg.PID[5][1].value == 'Doe'
         assert msg.PID[5][2].value == 'John'
     }
+
+    Message createMessage(String name, String version){
+        Message msg = Message.ADT_A01(version)
+        msg.PID.with {
+            getPatientName(0).familyName.surname.value = name
+        }
+        return msg
+    }
 }

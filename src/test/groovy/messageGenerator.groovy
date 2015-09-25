@@ -1,20 +1,18 @@
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
+import ca.uhn.hl7v2.model.v25.message.ADT_A02
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
 import org.junit.BeforeClass
 import org.junit.Test
 import org.openehealth.ipf.commons.core.config.ContextFacade
 import org.openehealth.ipf.commons.core.config.Registry
-import org.openehealth.ipf.commons.core.config.SimpleRegistry
 import org.openehealth.ipf.commons.map.BidiMappingService
 import org.openehealth.ipf.commons.map.MappingService
-import org.springframework.core.io.ClassPathResource
+
 import static org.easymock.EasyMock.*
-import static org.junit.Assert.*
-
-
+import static org.junit.Assert.assertEquals
 
 
 /**
@@ -25,7 +23,7 @@ public class messageGenerator {
     @BeforeClass
     static void setUp() {
         BidiMappingService mappingService = new BidiMappingService()
-        mappingService.addMappingScript(new ClassPathResource("example2.map"))
+        //mappingService.addMappingScript(new ClassPathResource("example2.map"))
         ModelClassFactory mcf = new CustomModelClassFactory()
         HapiContext context = new DefaultHapiContext(mcf)
         Registry registry = createMock(Registry)
@@ -64,11 +62,20 @@ public class messageGenerator {
         assert msg.PID[5][2].value == 'John'
     }
 
-    Message createMessage(String name, String version){
-        Message msg = Message.ADT_A01(version)
+    Message createMessage(String event, String name, String version){
+        Message msg = Message."$event"(version)
         msg.PID.with {
             getPatientName(0).familyName.surname.value = name
         }
         return msg
+    }
+
+    @Test
+    void createGenericMessage(){
+        def msg01 = createMessage('ADT_A01', 'Homer', '2.4')
+        assert msg01.getClass().is(ca.uhn.hl7v2.model.v24.message.ADT_A01)
+
+        def msg02 = createMessage('ADT_A02', 'Marge', '2.5')
+        assert msg02.getClass().is(ADT_A02)
     }
 }

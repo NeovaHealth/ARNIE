@@ -1,7 +1,10 @@
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
+import ca.uhn.hl7v2.model.Segment
+import ca.uhn.hl7v2.model.v22.segment.PID
 import ca.uhn.hl7v2.model.v25.message.ADT_A02
+import ca.uhn.hl7v2.model.v26.message.ADT_A03
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
 import org.junit.BeforeClass
@@ -34,48 +37,53 @@ public class messageGenerator {
         replay(registry)
     }
 
-    Message getA01(String version) {
-        return Message.ADT_01(version)
-    }
-
-    @Test
-    void makeMsg(){
-        Message newA01 = getA01('2.5')
-        assertEquals 'ADT', newA01.MSH.messageType.messageCode.value
-        assertEquals '2.5', newA01.MSH.versionID.versionID.value
-    }
-
-    @Test
-    void messageFromScratch(){
-        Message msg = Message.ADT_A01('2.4')
-        msg.MSH.with {
-            sendingApplication.namespaceID.value = 'TestSendingSystem'
-            sequenceNumber.value = '123'
-        }
-        msg.PID.with {
-            getPatientName(0).familyName.surname.value = 'Doe'
-            getPatientName(0).givenName.value = 'John'
-            getPatientIdentifierList(0).ID.value = '123456'
-        }
-        assert msg.PID[3].value == '123456'
-        assert msg.PID[5][1].value == 'Doe'
-        assert msg.PID[5][2].value == 'John'
-    }
-
-    Message createMessage(String event, String name, String version){
+    //
+    Message createMessage(String event, Map values, String version){
+        event = 'ADT_' + event
         Message msg = Message."$event"(version)
+
         msg.PID.with {
-            getPatientName(0).familyName.surname.value = name
+            getPatientID().getIDNumber().value = values.nhs_number //2
+            getAlternatePatientIDPID(0).getIDNumber().value = values.hospital_number //4
+            getPatientName(0).getFamilyName().getSurname().value = values.family_name //5-1
+            getPatientName(0).getGivenName().value = values.given_name //5-2
+            getDateTimeOfBirth().getTime().value = values.dob //7
+            getAdministrativeSex().value = values.sex //8
+            getPatientAddress(0).getStreetAddress().getStreetName().value = values.address //11
         }
         return msg
     }
 
     @Test
-    void createGenericMessage(){
-        def msg01 = createMessage('ADT_A01', 'Homer', '2.4')
-        assert msg01.getClass().is(ca.uhn.hl7v2.model.v24.message.ADT_A01)
+    void createGenericA01Message(){
+        def valueMap = [nhs_number: '0123456789', hospital_number:'012345', family_name:'Simpson', given_name:'Homer', dob: '19801231000000', sex:'M', address: 'High Street', ward_admit:'06BN']
+        def msg01 = createMessage('A01', valueMap, '2.5')
 
-        def msg02 = createMessage('ADT_A02', 'Marge', '2.5')
+        assert msg01.getClass().is(ca.uhn.hl7v2.model.v25.message.ADT_A01)
+        assert msg01.PID[2].value == valueMap.nhs_number
+        assert msg01.PID[4].value == valueMap.hospital_number
+        assert msg01.PID[5][1].value == 'Simpson'
+        assert msg01.PID[5][2].value == 'Homer'
+        assert msg01.PID[7].value == valueMap.dob
+        assert msg01.PID[8].value == valueMap.sex
+        assert msg01.PID[11][1][2].value == valueMap.address
+    }
+
+    @Test
+    void createGenericA02Message(){
+        def valueMap = [family_name:'Simpson', given_name:'Marge', address: 'High Street', location:'06BN']
+        def msg02 = createMessage('A02', valueMap, '2.5')
         assert msg02.getClass().is(ADT_A02)
+        assert msg02.PID[5][1].value == valueMap.family_name
+        assert msg02.PID[5][2].value == valueMap.given_name
+        assert msg02.PID[8].value == null
+    }
+
+    @Test
+    void createGenericA03Message(){
+        def valueMap = [family_name:'Simpson', given_name:'Bart', location:'06BN']
+        def msg03 = createMessage('A03', valueMap, '2.6')
+        assert msg03.getClass().is(ADT_A03)
+        assert msg03.PID[5][2].value == 'Bart'
     }
 }

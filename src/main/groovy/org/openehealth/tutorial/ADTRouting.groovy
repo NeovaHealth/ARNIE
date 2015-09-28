@@ -7,6 +7,8 @@ import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
 
+import javax.xml.bind.ValidationException
+
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
 class ADTRouting extends SpringRouteBuilder{
@@ -33,6 +35,8 @@ class ADTRouting extends SpringRouteBuilder{
         hl7.setHapiContext(context)
 
         String hl7listener = "direct:hl7listener"
+        String hl7router = "direct:hl7router"
+
         String inputQueue = "direct:activemq-in"
         String admit = "direct:admit"
         String transfer = "direct:transfer"
@@ -42,7 +46,6 @@ class ADTRouting extends SpringRouteBuilder{
 
         String msgLogging = "direct:msgLogging"
         String msgHistory = "msgHistory"
-        String hl7router = "direct:hl7router"
 
         //entry point
         from(hl7listener)

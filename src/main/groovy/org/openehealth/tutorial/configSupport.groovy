@@ -9,6 +9,7 @@ final ConfigObject configFile = new ConfigSlurper().parse(new File("/home/gregor
 
 final family_name = configFile.common.family_name
 
+println(configFile.ADT_mappings.common)
 println(family_name)
 println(configFile)
 

@@ -24,7 +24,7 @@ import messageGenerator
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 @ContextConfiguration(locations = ["/context.xml"])
-class routingTest extends CamelSpringTestSupport{
+class RoutingTest extends CamelSpringTestSupport{
 
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("/context.xml");

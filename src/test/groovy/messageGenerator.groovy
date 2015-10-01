@@ -1,8 +1,6 @@
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
-import ca.uhn.hl7v2.model.Segment
-import ca.uhn.hl7v2.model.v22.segment.PID
 import ca.uhn.hl7v2.model.v25.message.ADT_A02
 import ca.uhn.hl7v2.model.v26.message.ADT_A03
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
@@ -15,8 +13,6 @@ import org.openehealth.ipf.commons.map.BidiMappingService
 import org.openehealth.ipf.commons.map.MappingService
 
 import static org.easymock.EasyMock.*
-import static org.junit.Assert.assertEquals
-
 
 /**
  * Created by gregorlenz on 23/09/15.
@@ -37,36 +33,34 @@ public class messageGenerator {
         replay(registry)
     }
 
-    //
     Message createMessage(String event, Map values, String version){
         event = 'ADT_' + event
         Message msg = Message."$event"(version)
 
-        msg.PID.with {
-            getPatientID().getIDNumber().value = values.nhs_number //2
-            getAlternatePatientIDPID(0).getIDNumber().value = values.hospital_number //4
-            getPatientName(0).getFamilyName().getSurname().value = values.family_name //5-1
-            getPatientName(0).getGivenName().value = values.given_name //5-2
-            getDateTimeOfBirth().getTime().value = values.dob //7
-            getAdministrativeSex().value = values.sex //8
-            getPatientAddress(0).getStreetAddress().getStreetName().value = values.address //11
-        }
+        msg.PID[2] = values.nhs_number
+        msg.PID[4] = values.hospital_number
+        msg.PID[5][1] = 'Simpson'
+        msg.PID[5][2] = 'Homer'
+        msg.PID[7] = values.dob
+        msg.PID[8] = values.sex
+        msg.PID[11][1] = values.address
+
         return msg
     }
 
     @Test
     void createGenericA01Message(){
         def valueMap = [nhs_number: '0123456789', hospital_number:'012345', family_name:'Simpson', given_name:'Homer', dob: '19801231000000', sex:'M', address: 'High Street', ward_admit:'06BN']
-        def msg01 = createMessage('A01', valueMap, '2.5')
+        def msg01 = createMessage('A01', valueMap, '2.2')
 
-        assert msg01.getClass().is(ca.uhn.hl7v2.model.v25.message.ADT_A01)
+        assert msg01.getClass().is(ca.uhn.hl7v2.model.v22.message.ADT_A01)
         assert msg01.PID[2].value == valueMap.nhs_number
         assert msg01.PID[4].value == valueMap.hospital_number
         assert msg01.PID[5][1].value == 'Simpson'
         assert msg01.PID[5][2].value == 'Homer'
         assert msg01.PID[7].value == valueMap.dob
         assert msg01.PID[8].value == valueMap.sex
-        assert msg01.PID[11][1][2].value == valueMap.address
+        assert msg01.PID[11][1].value == valueMap.address
     }
 
     @Test

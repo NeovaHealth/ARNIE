@@ -1,6 +1,6 @@
 Feature: Admit a patient to a ward
 
-  Scenario: Admit patient Gandalf Grey to ward 6BN
-    Given Patient "Gandalf" is admitted to ward "6BN"
+  Scenario: Admit patient Arthur Nudge to ward 6BN
+    Given Patient "Arthur Nudge", born on "07/06/1980" with NHS number "0123456789" is admitted to ward "06BN".
     When an "A01" message is sent to ARNIE
     Then we receive an ACK with "AA"

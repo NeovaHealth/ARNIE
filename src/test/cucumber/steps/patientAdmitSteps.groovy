@@ -58,9 +58,10 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
     assert patient.admitLocation == ward
 }
 
-When(~/an "(\w+)" message is sent to ARNIE/){
+When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with the name in the following field: "([^"]+)"/){ eventType, HL7version, nameField ->
+    def msg = creator.createGenericMessage(eventType, patient, HL7version)
 
-    def msg = creator.createGenericMessage('A01', patient, '2.2')
+    assert ('2.2'..'2.6').contains(HL7version)
     assert msg.getClass().is(ca.uhn.hl7v2.model.v22.message.ADT_A01)
     assert msg.PID[2].value == nhs_number
     assert msg.PID[5][1].value == patientName

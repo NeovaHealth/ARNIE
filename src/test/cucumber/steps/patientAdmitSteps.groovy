@@ -4,14 +4,23 @@ import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
+import cucumber.api.junit.Cucumber
+import org.apache.camel.test.spring.CamelSpringTestSupport
+import org.junit.runner.RunWith
 import org.openehealth.ipf.commons.core.config.ContextFacade
 import org.openehealth.ipf.commons.core.config.Registry
 import org.openehealth.ipf.commons.map.BidiMappingService
 import org.openehealth.ipf.commons.map.MappingService
+import org.springframework.context.support.AbstractXmlApplicationContext
+import org.springframework.context.support.ClassPathXmlApplicationContext
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.TestExecutionListeners
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 import support.*
 import org.openehealth.tutorial.ADTRouting
 import static cucumber.api.groovy.EN.*
 import static cucumber.api.groovy.Hooks.*
+import static cucumber.api.spring.SpringTransactionHooks.*
 import static org.easymock.EasyMock.createMock
 import static org.easymock.EasyMock.expect
 import static org.easymock.EasyMock.replay
@@ -19,9 +28,16 @@ import static org.easymock.EasyMock.replay
 /**
  * Created by gregorlenz on 24/09/15.
 */
+@RunWith(Cucumber.class)
+@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
+@ContextConfiguration(locations = ["/context.xml"])
+class testEnvironment extends CamelSpringTestSupport {
+    protected AbstractXmlApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("/context.xml");
+    }
 
-class testEnvironment {
     def patient = new Patient()
+    def router = new Router()
 }
 
 World {
@@ -59,16 +75,16 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
 }
 
 When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with the name in the following field: "([^"]+)"/){ eventType, HL7version, nameField ->
-    def msg = creator.createGenericMessage(eventType, patient, HL7version)
-
+    //TODO add closure to iterate over A01 - A40 //assert ('A'+('01'..'40')).contains(eventType)
     assert ('2.2'..'2.6').contains(HL7version)
-    assert msg.getClass().is(ca.uhn.hl7v2.model.v22.message.ADT_A01)
-    assert msg.PID[2].value == nhs_number
-    assert msg.PID[5][1].value == patientName
-    assert msg.PID[7].value == dob
 
+    def msg = creator.createGenericMessage(eventType, patient, HL7version)
+    assert msg.PID[2].value == patient.nhsNumber
+    assert msg.PID[5][1].value == patient.familyName
+    assert msg.PID[7].value == patient.dateOfBirth
 
-    throw new cucumber.api.PendingException()
+    template.sendBody("direct:hl7listener", msg)
+    router.testA01(msg)
 }
 
 Then(~/we receive an ACK with "(\w+)"/){ String ACK ->

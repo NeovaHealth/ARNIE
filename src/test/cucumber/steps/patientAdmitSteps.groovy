@@ -36,6 +36,19 @@ class testEnvironment extends CamelSpringTestSupport {
         return new ClassPathXmlApplicationContext("/context.xml");
     }
 
+    public testEnvironment(){
+        BidiMappingService mappingService = new BidiMappingService()
+        //mappingService.addMappingScript(new ClassPathResource("example2.map"))
+        ModelClassFactory mcf = new CustomModelClassFactory()
+        HapiContext context = new DefaultHapiContext(mcf)
+        Registry registry = createMock(Registry)
+        ContextFacade.setRegistry(registry)
+        expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
+        expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
+        expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
+        replay(registry)
+    }
+
     def patient = new Patient()
     def router = new Router()
 }
@@ -47,17 +60,6 @@ World {
 Before() {
     ARNIE = new ADTRouting()
     creator = new MessageCreation()
-
-    BidiMappingService mappingService = new BidiMappingService()
-    //mappingService.addMappingScript(new ClassPathResource("example2.map"))
-    ModelClassFactory mcf = new CustomModelClassFactory()
-    HapiContext context = new DefaultHapiContext(mcf)
-    Registry registry = createMock(Registry)
-    ContextFacade.setRegistry(registry)
-    expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
-    expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
-    expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
-    replay(registry)
 }
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->
@@ -87,7 +89,7 @@ When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with th
     router.testA01(msg)
 }
 
-Then(~/we receive an ACK with "(\w+)"/){ String ACK ->
+Then(~/we receive an ACK with "([^"]+)"/){ String ACK ->
     throw new cucumber.api.PendingException()
 }
 

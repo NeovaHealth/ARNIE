@@ -11,6 +11,7 @@ import org.openehealth.ipf.commons.core.config.ContextFacade
 import org.openehealth.ipf.commons.core.config.Registry
 import org.openehealth.ipf.commons.map.BidiMappingService
 import org.openehealth.ipf.commons.map.MappingService
+import org.springframework.context.ApplicationContext
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.test.context.ContextConfiguration
@@ -30,11 +31,11 @@ import static org.easymock.EasyMock.replay
 */
 @RunWith(Cucumber.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
-@ContextConfiguration(locations = ["/context.xml"])
-class testEnvironment extends CamelSpringTestSupport {
-    protected AbstractXmlApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("/context.xml");
-    }
+@ContextConfiguration(locations = ["/cucumber.xml"])
+class testEnvironment{
+    //protected AbstractXmlApplicationContext createApplicationContext() {
+    //    return new ClassPathXmlApplicationContext(["/cucumber.xml"]);
+    //}
 
     public testEnvironment(){
         BidiMappingService mappingService = new BidiMappingService()
@@ -47,6 +48,7 @@ class testEnvironment extends CamelSpringTestSupport {
         expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
         expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
         replay(registry)
+
     }
 
     def patient = new Patient()
@@ -59,6 +61,14 @@ World {
 
 Before() {
     ARNIE = new ADTRouting()
+
+    def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
+    def testBean = springContext.getBean("testBean")
+    assert testBean.getClass() == Patient
+
+    def routeBuilder = springContext.getBean("routeBuilder")
+    assert routeBuilder.getClass() == ADTRouting
+
     creator = new MessageCreation()
 }
 
@@ -70,6 +80,7 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
         admitLocation = ward
     }
 
+    //assert testBean != null
     assert patient.familyName == patientName
     assert !patient.dateOfBirth.contains(' ')
     assert patient.nhsNumber.isNumber() && patient.nhsNumber.length() == 10

@@ -5,6 +5,7 @@ import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
 import cucumber.api.junit.Cucumber
+import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.runner.RunWith
 import org.openehealth.ipf.commons.core.config.ContextFacade
@@ -32,7 +33,7 @@ import static org.easymock.EasyMock.replay
 @RunWith(Cucumber.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 @ContextConfiguration(locations = ["/cucumber.xml"])
-class testEnvironment{
+class testEnvironment {
     //protected AbstractXmlApplicationContext createApplicationContext() {
     //    return new ClassPathXmlApplicationContext(["/cucumber.xml"]);
     //}
@@ -53,6 +54,17 @@ class testEnvironment{
 
     def patient = new Patient()
     def router = new Router()
+
+
+    def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
+    def testBean = springContext.getBean("testBean")
+
+    def routeBuilder = springContext.getBean("routeBuilder")
+
+    def camelContext = springContext.getBean("camelContext")
+
+    MockEndpoint admitEndpoint = MockEndpoint.resolve(camelContext, "mock:diect:admit")
+
 }
 
 World {
@@ -62,17 +74,15 @@ World {
 Before() {
     ARNIE = new ADTRouting()
 
-    def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
-    def testBean = springContext.getBean("testBean")
-    assert testBean.getClass() == Patient
-
-    def routeBuilder = springContext.getBean("routeBuilder")
-    assert routeBuilder.getClass() == ADTRouting
-
     creator = new MessageCreation()
 }
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->
+
+    assert testBean.getClass() == Patient
+    assert routeBuilder.getClass() == ADTRouting
+
+
     patient.with {
         familyName = patientName
         dateOfBirth = dob

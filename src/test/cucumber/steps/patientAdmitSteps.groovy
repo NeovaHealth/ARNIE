@@ -1,61 +1,39 @@
 package steps
 
-import ca.uhn.hl7v2.DefaultHapiContext
-import ca.uhn.hl7v2.HapiContext
-import ca.uhn.hl7v2.parser.CustomModelClassFactory
-import ca.uhn.hl7v2.parser.ModelClassFactory
-import cucumber.api.junit.Cucumber
-import org.apache.camel.CamelContext
-import org.apache.camel.CamelExecutionException
 import org.apache.camel.Endpoint
-import org.apache.camel.Exchange
-import org.apache.camel.ExchangePattern
-import org.apache.camel.Processor
 import org.apache.camel.ProducerTemplate
 import org.apache.camel.component.mock.MockEndpoint
-import org.apache.camel.impl.DefaultProducerTemplate
-import org.apache.camel.spi.Synchronization
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.runner.RunWith
-import org.openehealth.ipf.commons.core.config.ContextFacade
-import org.openehealth.ipf.commons.core.config.Registry
-import org.openehealth.ipf.commons.map.BidiMappingService
-import org.openehealth.ipf.commons.map.MappingService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 import support.*
 import org.openehealth.tutorial.ADTRouting
 
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Future
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
-
 import static cucumber.api.groovy.EN.*
 import static cucumber.api.groovy.Hooks.*
-import static cucumber.api.spring.SpringTransactionHooks.*
-import static org.easymock.EasyMock.createMock
-import static org.easymock.EasyMock.expect
-import static org.easymock.EasyMock.replay
 
 /**
  * Created by gregorlenz on 24/09/15.
 */
-@RunWith(Cucumber.class)
+//@RunWith(Cucumber.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 @ContextConfiguration(locations = ["/cucumber.xml"])
+//@CucumberOptions(glue = {"cucumber.", "cucumber.api.spring"})
 class testEnvironment extends CamelSpringTestSupport{
     protected AbstractXmlApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext(["/cucumber.xml"]);
+        return new ClassPathXmlApplicationContext(["/cucumber.xml"])
     }
 
 
     public testEnvironment(){
+        /*
         BidiMappingService mappingService = new BidiMappingService()
         //mappingService.addMappingScript(new ClassPathResource("example2.map"))
         ModelClassFactory mcf = new CustomModelClassFactory()
@@ -66,15 +44,19 @@ class testEnvironment extends CamelSpringTestSupport{
         expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
         expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
         replay(registry)
+    */
+        this.applicationContext = springContext
+        //this.context = springContext
+    }
 
-
+    @Override
+    public String isMockEndpointsAndSkip(){
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
     def patient = new Patient()
-    def router = new Router()
+    def router = new Router(springContext)
 
-    @Autowired
-    ProducerTemplate producer
 
     @Autowired
     def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
@@ -86,13 +68,24 @@ class testEnvironment extends CamelSpringTestSupport{
     def routeBuilder = springContext.getBean("routeBuilder")
 
     @Autowired
-    def camelContext = springContext.getBean("camelContext")
+    def BDDcamelContext = springContext.getBean("camelContext")
 
-    MockEndpoint admitEndpoint = MockEndpoint.resolve(camelContext, "mock:direct:admit")
+    @Autowired
+    ProducerTemplate producer = BDDcamelContext.createProducerTemplate()
+
+    //@Autowired
+    //MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit")
+
+    @Autowired
+    MockEndpoint listenerEndpoint = MockEndpoint.resolve(BDDcamelContext, "mock:direct:hl7listener")
+
+    @Autowired
+    MockEndpoint routerEndpoint = MockEndpoint.resolve(BDDcamelContext, "mock:direct:hl7router")
+
 
 }
 
-World {
+World() {
     new testEnvironment()
 }
 
@@ -100,6 +93,7 @@ Before() {
     ARNIE = new ADTRouting()
 
     creator = new MessageCreation()
+
 }
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->
@@ -107,7 +101,17 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
     assert testBean.getClass() == Patient
     assert routeBuilder.getClass() == ADTRouting
 
+    router.testA01("Test")
+    //MockEndpoint transferEndpoint = getMockEndpoint("direct:transfer")
+    //transferEndpoint.expectedMessageCount(0)
+    admitEndpoint.setExpectedMessageCount(1);
+
     producer.sendBody(admitEndpoint, "Hello")
+    admitEndpoint.assertIsSatisfied()
+
+    producer.sendBody(listenerEndpoint, "Hello")
+    routerEndpoint.setExpectedMessageCount(1)
+    routerEndpoint.assertIsSatisfied()
 
     patient.with {
         familyName = patientName

@@ -18,13 +18,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-@RunWith(Cucumber.class)
-@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 @ContextConfiguration(locations = ["/context.xml"])
 class Router extends CamelSpringTestSupport{
 
+    public Router(ClassPathXmlApplicationContext xmlcontext){
+        this.applicationContext = xmlcontext
+    }
+
     protected AbstractXmlApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext("/context.xml");
+        return new ClassPathXmlApplicationContext(["/cucumber.xml"]);
     }
 
     @Override
@@ -32,9 +34,8 @@ class Router extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
-    @Test
-    public void testA01(Message msg) throws IOException, InterruptedException {
-        def input  = msg.encode()
+    public void testA01(String msg) throws IOException, InterruptedException {
+        //def input  = msg.encode()
 
         MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit")
         admitEndpoint.expectedMessageCount(1)
@@ -42,7 +43,7 @@ class Router extends CamelSpringTestSupport{
         MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer")
         transferEndpoint.expectedMessageCount(0)
 
-        template.sendBody("direct:hl7listener", input)
+        template.sendBody("direct:hl7listener", msg)
         log.info("Sent A01")
         assertMockEndpointsSatisfied()
     }

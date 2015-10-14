@@ -5,6 +5,7 @@ import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
+import org.easymock.EasyMock
 import org.junit.BeforeClass
 import org.openehealth.ipf.commons.core.config.ContextFacade
 import org.openehealth.ipf.commons.core.config.Registry
@@ -24,6 +25,16 @@ class MessageCreation {
 
     public MessageCreation(){
 
+        BidiMappingService mappingService = new BidiMappingService()
+        //mappingService.addMappingScript(new ClassPathResource("example2.map"))
+        ModelClassFactory mcf = new org.openehealth.ipf.modules.hl7.parser.CustomModelClassFactory()
+        HapiContext context = new DefaultHapiContext(mcf)
+        Registry registry = EasyMock.createMock(Registry)
+        ContextFacade.setRegistry(registry)
+        EasyMock.expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
+        EasyMock.expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
+        EasyMock.expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
+        EasyMock.replay(registry)
     }
     @BeforeClass
     static void setUp() {

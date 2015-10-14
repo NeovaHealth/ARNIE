@@ -1,10 +1,19 @@
 package steps
 
+import ca.uhn.hl7v2.DefaultHapiContext
+import ca.uhn.hl7v2.HapiContext
+import ca.uhn.hl7v2.parser.ModelClassFactory
 import org.apache.camel.Endpoint
 import org.apache.camel.ProducerTemplate
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
+import org.easymock.EasyMock
 import org.junit.runner.RunWith
+import org.openehealth.ipf.commons.core.config.ContextFacade
+import org.openehealth.ipf.commons.core.config.Registry
+import org.openehealth.ipf.commons.map.BidiMappingService
+import org.openehealth.ipf.commons.map.MappingService
+import org.openehealth.ipf.modules.hl7.parser.CustomModelClassFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
@@ -31,21 +40,20 @@ class testEnvironment extends CamelSpringTestSupport{
         return new ClassPathXmlApplicationContext(["/cucumber.xml"])
     }
 
-
     public testEnvironment(){
-        /*
-        BidiMappingService mappingService = new BidiMappingService()
+
+        /*BidiMappingService mappingService = new BidiMappingService()
         //mappingService.addMappingScript(new ClassPathResource("example2.map"))
         ModelClassFactory mcf = new CustomModelClassFactory()
         HapiContext context = new DefaultHapiContext(mcf)
-        Registry registry = createMock(Registry)
+        Registry registry = EasyMock.createMock(Registry)
         ContextFacade.setRegistry(registry)
-        expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
-        expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
-        expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
-        replay(registry)
-    */
-        this.applicationContext = springContext
+        EasyMock.expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
+        EasyMock.expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
+        EasyMock.expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
+        EasyMock.replay(registry)*/
+
+        //this.applicationContext = springContext
         //this.context = springContext
     }
 
@@ -55,7 +63,7 @@ class testEnvironment extends CamelSpringTestSupport{
     }
 
     def patient = new Patient()
-    def router = new Router(springContext)
+    def router = new Router()
 
 
     @Autowired
@@ -101,18 +109,6 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
     assert testBean.getClass() == Patient
     assert routeBuilder.getClass() == ADTRouting
 
-    router.testA01("Test")
-    //MockEndpoint transferEndpoint = getMockEndpoint("direct:transfer")
-    //transferEndpoint.expectedMessageCount(0)
-    admitEndpoint.setExpectedMessageCount(1);
-
-    producer.sendBody(admitEndpoint, "Hello")
-    admitEndpoint.assertIsSatisfied()
-
-    producer.sendBody(listenerEndpoint, "Hello")
-    routerEndpoint.setExpectedMessageCount(1)
-    routerEndpoint.assertIsSatisfied()
-
     patient.with {
         familyName = patientName
         dateOfBirth = dob
@@ -120,7 +116,6 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
         admitLocation = ward
     }
 
-    //assert testBean != null
     assert patient.familyName == patientName
     assert !patient.dateOfBirth.contains(' ')
     assert patient.nhsNumber.isNumber() && patient.nhsNumber.length() == 10
@@ -136,7 +131,6 @@ When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with th
     assert msg.PID[5][1].value == patient.familyName
     assert msg.PID[7].value == patient.dateOfBirth
 
-    template.sendBody("direct:hl7listener", msg)
     router.testA01(msg)
 }
 

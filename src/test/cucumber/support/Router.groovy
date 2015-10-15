@@ -9,6 +9,9 @@ import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.impl.DefaultConsumerTemplate
 import org.apache.camel.impl.DefaultProducerTemplate
 import org.apache.camel.spring.CamelBeanPostProcessor
+import org.apache.camel.test.junit4.CamelTestSupport
+import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner
+import org.apache.camel.test.spring.CamelSpringTestHelper
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-//@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
+@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
 //@ContextConfiguration(locations = ["/context.xml"], inheritLocations = false, inheritInitializers = false)
 class Router extends CamelSpringTestSupport{
 
@@ -37,8 +40,8 @@ class Router extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
-    @Autowired
-    private ApplicationContext applicationContext
+    /*@Autowired
+    private ApplicationContext applicationContext*/
 
     public void testA01(Message msg) throws IOException, InterruptedException {
         def input  = msg.encode()
@@ -48,23 +51,31 @@ class Router extends CamelSpringTestSupport{
 
         def methodCamelContext = springcontext.getBean("camelContext")
 
-        //this.applicationContext = springcontext
+        this.applicationContext = springcontext
         this.context = methodCamelContext
+        //this.createCamelContext()
 
-        ProducerTemplate ptemplate = context.createProducerTemplate()
 
-        MockEndpoint admitEndpoint = MockEndpoint.resolve(methodCamelContext, "mock:dirct:admit")
-        admitEndpoint.expectedMessageCount(1)
-        admitEndpoint.setResultWaitTime(3000)
 
-        template = new DefaultProducerTemplate(methodCamelContext)
-        template.start()
+        this.setUp()
+        //this.context = methodCamelContext
 
-        //consumer = new DefaultConsumerTemplate(methodCamelContext)
+        //CamelSpring or CamelTest support class? setup
 
+
+        MockEndpoint admitEndpoint1 = MockEndpoint.resolve(context, "mock:direct:admit")
+        //MockEndpoint admitEndpoint1 = getMockEndpoint("mock:direct:admit")
+        admitEndpoint1.expectedMessageCount(1)
+        admitEndpoint1.setResultWaitTime(3000)
+        //ProducerTemplate ptemplate = context.createProducerTemplate()
+        //ptemplate.sendBody("direct:hl7listener", input1.getInputStream())
+
+        //template = new DefaultProducerTemplate(methodCamelContext)
+        //template.start()
         template.sendBody("direct:hl7listener", input1.getInputStream())
+
         log.info("Sent A01")
-        admitEndpoint.assertIsSatisfied(methodCamelContext)
+        admitEndpoint1.assertIsSatisfied()
 
         //assertMockEndpointsSatisfied()
     }

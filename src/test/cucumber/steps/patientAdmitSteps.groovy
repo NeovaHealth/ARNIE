@@ -3,6 +3,7 @@ package steps
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.parser.ModelClassFactory
+import cucumber.api.junit.Cucumber
 import org.apache.camel.Endpoint
 import org.apache.camel.ProducerTemplate
 import org.apache.camel.component.mock.MockEndpoint
@@ -30,15 +31,17 @@ import static cucumber.api.groovy.Hooks.*
 /**
  * Created by gregorlenz on 24/09/15.
 */
-//@RunWith(Cucumber.class)
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
-@ContextConfiguration(locations = ["/cucumber.xml"])
+@RunWith(Cucumber.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
+//@ContextConfiguration(locations = ["/cucumber.xml"])
 //@CucumberOptions(glue = {"cucumber.", "cucumber.api.spring"})
-class testEnvironment extends CamelSpringTestSupport{
+class testEnvironment {
+
+   /* @Override
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext(["/cucumber.xml"])
-    }
+    }*/
 
     public testEnvironment(){
 
@@ -57,15 +60,16 @@ class testEnvironment extends CamelSpringTestSupport{
         //this.context = springContext
     }
 
-    @Override
+   /* @Override
     public String isMockEndpointsAndSkip(){
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
-    }
+    }*/
 
     def patient = new Patient()
     def router = new Router()
 
 
+/*
     @Autowired
     def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
 
@@ -89,7 +93,7 @@ class testEnvironment extends CamelSpringTestSupport{
 
     @Autowired
     MockEndpoint routerEndpoint = MockEndpoint.resolve(BDDcamelContext, "mock:direct:hl7router")
-
+*/
 
 }
 
@@ -106,8 +110,8 @@ Before() {
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->
 
-    assert testBean.getClass() == Patient
-    assert routeBuilder.getClass() == ADTRouting
+    //assert testBean.getClass() == Patient
+    //assert routeBuilder.getClass() == ADTRouting
 
     patient.with {
         familyName = patientName

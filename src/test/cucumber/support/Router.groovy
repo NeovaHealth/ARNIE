@@ -40,63 +40,20 @@ class Router extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
-    /*@Autowired
-    private ApplicationContext applicationContext*/
-
-    public void testA01(Message msg) throws IOException, InterruptedException {
+    public void injectADTMessage(Message msg) throws IOException, InterruptedException {
         def input  = msg.encode()
-        Resource input1  = new ClassPathResource("/msg-01.hl7")
 
-        def springcontext = new ClassPathXmlApplicationContext("classpath:context.xml")
-
-        def methodCamelContext = springcontext.getBean("camelContext")
-
-        this.applicationContext = springcontext
-        this.context = methodCamelContext
-        //this.createCamelContext()
-
-
-
+        //this is key to test routes of a camelContext properly
         this.setUp()
-        //this.context = methodCamelContext
 
-        //CamelSpring or CamelTest support class? setup
+        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit")
+        admitEndpoint.expectedMessageCount(1)
+        admitEndpoint.setResultWaitTime(3000)
 
+        template.sendBody("direct:hl7listener", input)
+        admitEndpoint.assertIsSatisfied()
 
-        MockEndpoint admitEndpoint1 = MockEndpoint.resolve(context, "mock:direct:admit")
-        //MockEndpoint admitEndpoint1 = getMockEndpoint("mock:direct:admit")
-        admitEndpoint1.expectedMessageCount(1)
-        admitEndpoint1.setResultWaitTime(3000)
-        //ProducerTemplate ptemplate = context.createProducerTemplate()
-        //ptemplate.sendBody("direct:hl7listener", input1.getInputStream())
-
-        //template = new DefaultProducerTemplate(methodCamelContext)
-        //template.start()
-        template.sendBody("direct:hl7listener", input1.getInputStream())
-
-        log.info("Sent A01")
-        admitEndpoint1.assertIsSatisfied()
-
-        //assertMockEndpointsSatisfied()
-    }
-
-    void testA08() throws InterruptedException, IOException {
-        Resource input = new ClassPathResource("/msg-08.hl7");
-
-        MockEndpoint visitUpdateEndpoint = getMockEndpoint("mock:direct:visitUpdate");
-        visitUpdateEndpoint.expectedMessageCount(1);
-
-        MockEndpoint patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
-        patientUpdateEndpoint.expectedMessageCount(1)
-
-        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
-        admitEndpoint.expectedMessageCount(0);
-
-        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer");
-        transferEndpoint.expectedMessageCount(0);
-
-        template.sendBody("direct:hl7listener", input.getInputStream());
-        assertMockEndpointsSatisfied();
+        assertMockEndpointsSatisfied()
     }
 
     void testPostgres() {
@@ -110,16 +67,5 @@ class Router extends CamelSpringTestSupport{
 
     }
 
-    //@Test
-    void messageGeneratorTest() {
-        assert messageGenerator.getA01().getClass().is(Message)
-
-    }
-
-    //@Test
-    void msgGeneratorTest(){
-        Message thisA01 = messageGenerator.getA01()
-        assert thisA01.getClass().is(Message)
-    }
 
 }

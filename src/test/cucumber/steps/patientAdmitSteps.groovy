@@ -1,27 +1,7 @@
 package steps
 
-import ca.uhn.hl7v2.DefaultHapiContext
-import ca.uhn.hl7v2.HapiContext
-import ca.uhn.hl7v2.parser.ModelClassFactory
 import cucumber.api.junit.Cucumber
-import org.apache.camel.Endpoint
-import org.apache.camel.ProducerTemplate
-import org.apache.camel.component.mock.MockEndpoint
-import org.apache.camel.test.spring.CamelSpringTestSupport
-import org.easymock.EasyMock
 import org.junit.runner.RunWith
-import org.openehealth.ipf.commons.core.config.ContextFacade
-import org.openehealth.ipf.commons.core.config.Registry
-import org.openehealth.ipf.commons.map.BidiMappingService
-import org.openehealth.ipf.commons.map.MappingService
-import org.openehealth.ipf.modules.hl7.parser.CustomModelClassFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.support.AbstractXmlApplicationContext
-import org.springframework.context.support.ClassPathXmlApplicationContext
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestExecutionListeners
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 import support.*
 import org.openehealth.tutorial.ADTRouting
 
@@ -38,62 +18,8 @@ import static cucumber.api.groovy.Hooks.*
 //@CucumberOptions(glue = {"cucumber.", "cucumber.api.spring"})
 class testEnvironment {
 
-   /* @Override
-    protected AbstractXmlApplicationContext createApplicationContext() {
-        return new ClassPathXmlApplicationContext(["/cucumber.xml"])
-    }*/
-
-    public testEnvironment(){
-
-        /*BidiMappingService mappingService = new BidiMappingService()
-        //mappingService.addMappingScript(new ClassPathResource("example2.map"))
-        ModelClassFactory mcf = new CustomModelClassFactory()
-        HapiContext context = new DefaultHapiContext(mcf)
-        Registry registry = EasyMock.createMock(Registry)
-        ContextFacade.setRegistry(registry)
-        EasyMock.expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
-        EasyMock.expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
-        EasyMock.expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
-        EasyMock.replay(registry)*/
-
-        //this.applicationContext = springContext
-        //this.context = springContext
-    }
-
-   /* @Override
-    public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
-    }*/
-
     def patient = new Patient()
     def router = new Router()
-
-
-/*
-    @Autowired
-    def springContext = new ClassPathXmlApplicationContext("cucumber.xml")
-
-    @Autowired
-    def testBean = springContext.getBean("testBean")
-
-    @Autowired
-    def routeBuilder = springContext.getBean("routeBuilder")
-
-    @Autowired
-    def BDDcamelContext = springContext.getBean("camelContext")
-
-    @Autowired
-    ProducerTemplate producer = BDDcamelContext.createProducerTemplate()
-
-    //@Autowired
-    //MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit")
-
-    @Autowired
-    MockEndpoint listenerEndpoint = MockEndpoint.resolve(BDDcamelContext, "mock:direct:hl7listener")
-
-    @Autowired
-    MockEndpoint routerEndpoint = MockEndpoint.resolve(BDDcamelContext, "mock:direct:hl7router")
-*/
 
 }
 
@@ -109,10 +35,6 @@ Before() {
 }
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->
-
-    //assert testBean.getClass() == Patient
-    //assert routeBuilder.getClass() == ADTRouting
-
     patient.with {
         familyName = patientName
         dateOfBirth = dob
@@ -124,6 +46,7 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
     assert !patient.dateOfBirth.contains(' ')
     assert patient.nhsNumber.isNumber() && patient.nhsNumber.length() == 10
     assert patient.admitLocation == ward
+    assert patient.admitLocation.length() < 5
 }
 
 When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with the name in the following field: "([^"]+)"/){ eventType, HL7version, nameField ->
@@ -135,7 +58,7 @@ When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with th
     assert msg.PID[5][1].value == patient.familyName
     assert msg.PID[7].value == patient.dateOfBirth
 
-    router.testA01(msg)
+    router.injectADTMessage(msg)
 }
 
 Then(~/we receive an ACK with "([^"]+)"/){ String ACK ->

@@ -218,13 +218,6 @@
             <artifactId>gherkin3</artifactId>
             <version>3.1.1</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-jvm</artifactId>
-            <version>${cucumber-version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-groovy</artifactId>

@@ -7,8 +7,6 @@ import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
 
-import javax.xml.bind.ValidationException
-
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
 class ADTRouting extends SpringRouteBuilder{
@@ -68,7 +66,7 @@ class ADTRouting extends SpringRouteBuilder{
 
         from(admit)
             .transform({it -> it})
-
+            .to(msgHistory)
 
         from(transfer)
             .transform({it -> it})

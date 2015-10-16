@@ -1,34 +1,17 @@
 package support
+
+import ca.uhn.hl7v2.model.Message
+
 /**
  * Created by gregorlenz on 16/09/15.
  */
-import ca.uhn.hl7v2.model.Message
-import cucumber.api.junit.Cucumber
-import org.apache.camel.ProducerTemplate
 import org.apache.camel.component.mock.MockEndpoint
-import org.apache.camel.impl.DefaultConsumerTemplate
-import org.apache.camel.impl.DefaultProducerTemplate
-import org.apache.camel.spring.CamelBeanPostProcessor
-import org.apache.camel.test.junit4.CamelTestSupport
-import org.apache.camel.test.spring.CamelSpringJUnit4ClassRunner
-import org.apache.camel.test.spring.CamelSpringTestHelper
 import org.apache.camel.test.spring.CamelSpringTestSupport
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestExecutionListeners
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
-//@ContextConfiguration(locations = ["/context.xml"], inheritLocations = false, inheritInitializers = false)
 class Router extends CamelSpringTestSupport{
 
     protected AbstractXmlApplicationContext createApplicationContext() {
@@ -51,6 +34,8 @@ class Router extends CamelSpringTestSupport{
         admitEndpoint.setResultWaitTime(3000)
 
         template.sendBody("direct:hl7listener", input)
+        template.sendBody("direct:msgLogging", input)
+
         admitEndpoint.assertIsSatisfied()
 
         assertMockEndpointsSatisfied()

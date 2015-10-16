@@ -2,20 +2,18 @@ package steps
 
 import cucumber.api.junit.Cucumber
 import org.junit.runner.RunWith
-import support.*
-import org.openehealth.tutorial.ADTRouting
+import support.MessageCreation
+import support.Patient
+import support.Router
 
 import static cucumber.api.groovy.EN.*
-import static cucumber.api.groovy.Hooks.*
+import static cucumber.api.groovy.Hooks.Before
+import static cucumber.api.groovy.Hooks.World
 
 /**
  * Created by gregorlenz on 24/09/15.
 */
 @RunWith(Cucumber.class)
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
-//@ContextConfiguration(locations = ["/cucumber.xml"])
-//@CucumberOptions(glue = {"cucumber.", "cucumber.api.spring"})
 class testEnvironment {
 
     def patient = new Patient()
@@ -28,10 +26,7 @@ World() {
 }
 
 Before() {
-    ARNIE = new ADTRouting()
-
     creator = new MessageCreation()
-
 }
 
 Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitted to ward "([^"]+)"./) { String patientName, String dob, String nhs_number, String ward ->

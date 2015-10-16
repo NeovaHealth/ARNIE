@@ -1,16 +1,12 @@
 /**
  * Created by gregorlenz on 16/09/15.
  */
-import ca.uhn.hl7v2.DefaultHapiContext
-import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
-import ca.uhn.hl7v2.model.v24.message.ADT_A02
+import messageGenerator
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.openehealth.ipf.modules.hl7.model.AbstractMessage
-import org.openehealth.ipf.modules.hl7dsl.MessageAdapter
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.core.io.ClassPathResource
@@ -19,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
-import messageGenerator
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners([DependencyInjectionTestExecutionListener.class])
@@ -79,7 +74,6 @@ class RoutingTest extends CamelSpringTestSupport{
 
         template.sendBody("direct:msgLogging", input.getInputStream())
         assertMockEndpointsSatisfied()
-
     }
 
     //@Test

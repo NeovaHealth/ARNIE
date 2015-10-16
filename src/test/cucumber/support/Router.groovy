@@ -1,6 +1,7 @@
 package support
 
 import ca.uhn.hl7v2.model.Message
+import org.apache.camel.ExchangePattern
 
 /**
  * Created by gregorlenz on 16/09/15.
@@ -23,7 +24,7 @@ class Router extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:visitUpdate)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
     }
 
-    public void injectADTMessage(Message msg) throws IOException, InterruptedException {
+    public Message injectADTMessage(Message msg) throws IOException, InterruptedException {
         def input  = msg.encode()
 
         //this is key to test routes of a camelContext properly
@@ -33,12 +34,12 @@ class Router extends CamelSpringTestSupport{
         admitEndpoint.expectedMessageCount(1)
         admitEndpoint.setResultWaitTime(3000)
 
-        template.sendBody("direct:hl7listener", input)
+        def answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input)
         template.sendBody("direct:msgLogging", input)
 
         admitEndpoint.assertIsSatisfied()
-
         assertMockEndpointsSatisfied()
+        return answer
     }
 
     void testPostgres() {

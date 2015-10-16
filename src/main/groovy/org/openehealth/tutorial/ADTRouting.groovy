@@ -28,9 +28,9 @@ class ADTRouting extends SpringRouteBuilder{
 
         context.setValidationRuleBuilder(builder);
 
-
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
+
 
         String hl7listener = "direct:hl7listener"
         String hl7router = "direct:hl7router"
@@ -51,6 +51,8 @@ class ADTRouting extends SpringRouteBuilder{
             .setHeader("triggerEvent", {inbound -> inbound.in.body.getTriggerEvent()})
             .setHeader("visitNameString", {inbound -> inbound.in.body.MSH[4].toString()})
             //.setHeader("data", {inbound -> inbound.in[Message].toString()})
+            .transform({it -> it.in.body.generateACK()})
+            //.marshal(hl7)
             .to(hl7router)
 
         from(hl7router)

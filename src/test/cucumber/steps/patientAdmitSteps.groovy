@@ -1,5 +1,6 @@
 package steps
 
+import ca.uhn.hl7v2.model.Message
 import cucumber.api.junit.Cucumber
 import org.junit.runner.RunWith
 import support.MessageCreation
@@ -15,10 +16,10 @@ import static cucumber.api.groovy.Hooks.World
 */
 @RunWith(Cucumber.class)
 class testEnvironment {
+    Message answer
 
     def patient = new Patient()
     def router = new Router()
-
 }
 
 World() {
@@ -53,11 +54,11 @@ When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with th
     assert msg.PID[5][1].value == patient.familyName
     assert msg.PID[7].value == patient.dateOfBirth
 
-    router.injectADTMessage(msg)
+    answer = router.injectADTMessage(msg)
 }
 
 Then(~/we receive an ACK with "([^"]+)"/){ String ACK ->
-    throw new cucumber.api.PendingException()
+    assert answer.MSA[1].value == ACK
 }
 
 

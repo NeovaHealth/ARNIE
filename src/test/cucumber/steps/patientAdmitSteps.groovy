@@ -1,26 +1,12 @@
 package steps
 
-import ca.uhn.hl7v2.model.Message
-import cucumber.api.junit.Cucumber
-import org.junit.runner.RunWith
-import support.MessageCreation
-import support.Patient
-import support.Router
+import support.*
+import cucumber.*
 
 import static cucumber.api.groovy.EN.*
 import static cucumber.api.groovy.Hooks.Before
 import static cucumber.api.groovy.Hooks.World
 
-/**
- * Created by gregorlenz on 24/09/15.
-*/
-@RunWith(Cucumber.class)
-class testEnvironment {
-    Message answer
-
-    def patient = new Patient()
-    def router = new Router()
-}
 
 World() {
     new testEnvironment()
@@ -42,10 +28,10 @@ Given(~/Patient "([^"]+)", born on "([^"]+)" with NHS number "([^"]+)" is admitt
     assert !patient.dateOfBirth.contains(' ')
     assert patient.nhsNumber.isNumber() && patient.nhsNumber.length() == 10
     assert patient.admitLocation == ward
-    assert patient.admitLocation.length() < 5
+    assert patient.admitLocation.length() < 6
 }
 
-When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with the name in the following field: "([^"]+)"/){ eventType, HL7version, nameField ->
+When(~/an "([^"]+)" message using HL7 version "([^"]+)" is sent to ARNIE with the name in the following field: "([^"]+)"/){ eventType, HL7version, nameField ->
     //TODO add closure to iterate over A01 - A40 //assert ('A'+('01'..'40')).contains(eventType)
     assert ('2.2'..'2.6').contains(HL7version)
 
@@ -57,7 +43,10 @@ When(~/an "([^"]+)" message using HL7 Version "([^"]+)" is sent to ARNIE with th
     answer = router.injectADTMessage(msg)
 }
 
-Then(~/we receive an ACK with "([^"]+)"/){ String ACK ->
+Then(~/an Acknowledgement message with "([^"]+)" is received./){ String ACK ->
+    //assert answer.getClass() == Message
+    //.getParent()?
+    //assert answer.getMessageType().toString() == 'ACK'
     assert answer.MSA[1].value == ACK
 }
 

@@ -13,7 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 
-class Router extends CamelSpringTestSupport{
+class CamelConnector extends CamelSpringTestSupport{
 
     protected AbstractXmlApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("classpath:context.xml");

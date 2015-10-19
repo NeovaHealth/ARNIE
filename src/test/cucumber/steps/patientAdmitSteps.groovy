@@ -1,7 +1,6 @@
 package steps
 
 import support.*
-import cucumber.*
 
 import static cucumber.api.groovy.EN.*
 import static cucumber.api.groovy.Hooks.Before

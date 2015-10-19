@@ -19,13 +19,13 @@ Before() {
 
 }
 
-Given(~/Patient "([^"]+)", who has already been admitted, has to be transferred to another ward "([^"]+)"./){ name, location ->
+Given(~/Patient "([^"]+)", who has already been admitted, should be discharged./){ name ->
     //TODO check if Patient 'name' is already admitted
     throw new PendingException()
 }
 
-When(~/an "([^"]+)" message using HL7 version "([^"]+)" is sent to ARNIE with the target location in "([^"]+)"/) {
-    triggerEvent, version, field ->
+When(~/an "([^"]+)" message using HL7 version "([^"]+)" is sent to ARNIE/) {
+    triggerEvent, version ->
 
     throw new PendingException()
 }

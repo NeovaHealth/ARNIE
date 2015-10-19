@@ -58,6 +58,11 @@
             <version>2.4.4</version>
         </dependency>
         <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-xmlrpc</artifactId>
+            <version>0.8</version>
+        </dependency>
+        <dependency>
             <groupId>org.openehealth.ipf.platform-camel</groupId>
             <artifactId>ipf-platform-camel-core</artifactId>
             <version>${ipf-version}</version>

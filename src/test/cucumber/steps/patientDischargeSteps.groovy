@@ -29,3 +29,8 @@ When(~/an "([^"]+)" message using HL7 version "([^"]+)" is sent to ARNIE/) {
 
     throw new PendingException()
 }
+
+Given(~/the eObs API is ready/) {
+    steps.patientDischargeSteps
+
+}

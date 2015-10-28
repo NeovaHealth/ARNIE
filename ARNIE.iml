@@ -24,6 +24,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:2.15.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" level="project" />

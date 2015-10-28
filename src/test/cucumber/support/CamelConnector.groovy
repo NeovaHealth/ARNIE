@@ -34,7 +34,7 @@ class CamelConnector extends CamelSpringTestSupport{
         admitEndpoint.expectedMessageCount(1)
         admitEndpoint.setResultWaitTime(3000)
 
-        def answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input)
+        Message answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input)
         template.sendBody("direct:msgLogging", input)
 
         admitEndpoint.assertIsSatisfied()

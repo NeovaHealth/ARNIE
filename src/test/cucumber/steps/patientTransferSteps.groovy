@@ -38,7 +38,7 @@ When(~/an "([^"]+)" message using HL7 version "([^"]+)" is sent to ARNIE with th
     throw new PendingException()
 }
 
-Then(~/an Acknowledgement message with "([^"]+)" is received./){ String ACK ->
+Then(~/an Acknowledgement message for A02 with "([^"]+)" is received./){ String ACK ->
     //assert answer01.getClass() == Message
     //.getParent()?
     //assert answer01.getMessageType().toString() == 'ACK'

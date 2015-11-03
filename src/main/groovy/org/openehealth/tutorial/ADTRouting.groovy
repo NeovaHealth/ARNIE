@@ -62,8 +62,6 @@ class ADTRouting extends SpringRouteBuilder{
 
         from(inputQueue)
             //.unmarshal(hl7)
-            //.setHeader("myRoute").method(ComputeRoutingSlip)
-            //.routingSlip("myRoute")
             .bean(ComputeRoutingSlip)
 
         from(admit)

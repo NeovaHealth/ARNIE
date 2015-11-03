@@ -32,20 +32,6 @@ class MessageCreation {
         replay(registry)
     }
 
-    @BeforeClass
-    static void setUp() {
-        BidiMappingService mappingService = new BidiMappingService()
-        //mappingService.addMappingScript(new ClassPathResource("example2.map"))
-        ModelClassFactory mcf = new CustomModelClassFactory()
-        HapiContext context = new DefaultHapiContext(mcf)
-        Registry registry = createMock(Registry)
-        ContextFacade.setRegistry(registry)
-        expect(registry.bean(MappingService)).andReturn(mappingService).anyTimes()
-        expect(registry.bean(ModelClassFactory)).andReturn(mcf).anyTimes()
-        expect(registry.bean(HapiContext)).andReturn(context).anyTimes()
-        replay(registry)
-    }
-
     Message createGenericMessage(String event, Patient patient, String version){
         event = 'ADT_' + event
         Message msg = Message."$event"(version)

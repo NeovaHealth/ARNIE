@@ -17,7 +17,7 @@ public class ComputeRoutingSlip {
             case 'A01': return "direct:updateOrCreatePatient, direct:admit"
             case 'A02': return "direct:updateOrCreatePatient, direct:transfer"
             case 'A03': return "direct:updateOrCreatePatient, direct:discharge"
-            case 'A08': return "direct:updateOrCreatePatient, direct:visitUpdate"
+            case 'A08': return "direct:updateOrCreatePatient, direct:updateVisit"
             case 'A11': return "direct:updateOrCreatePatient, direct:cancelAdmit"
             case 'A12': return "direct:updateOrCreatePatient, direct:cancelTransfer"
             case 'A13': return "direct:updateOrCreatePatient, direct:cancelDischarge"

@@ -72,10 +72,10 @@
             <artifactId>ipf-commons-map</artifactId>
             <version>${ipf-version}</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.openehealth.ipf.platform-camel</groupId>
             <artifactId>ipf-platform-camel-hl7</artifactId>
@@ -101,11 +101,11 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>2.1.1</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.googlecode.log4jdbc</groupId>
             <artifactId>log4jdbc</artifactId>
@@ -251,6 +251,14 @@
             <artifactId>cucumber-jvm-deps</artifactId>
             <version>1.0.5</version>
         </dependency>
+
+<!--        <exclusions>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.0.13</version>
+            </exclusion>
+        </exclusions>-->
 
     </dependencies>
 

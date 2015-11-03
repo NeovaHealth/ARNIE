@@ -35,7 +35,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     public void testA01() throws IOException, InterruptedException {
-        //Resource input  = new ClassPathResource("/msg-01.hl7")
+        Resource input  = new ClassPathResource("/msg-01.hl7")
         def gen = new MessageGenerator()
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
@@ -89,18 +89,6 @@ class RoutingTest extends CamelSpringTestSupport{
 
         template.sendBody("direct:msgLogging", input.getInputStream())
         assertMockEndpointsSatisfied()
-    }
-
-    //@Test
-    void messageGeneratorTest() {
-        assert MessageGenerator.getA01().getClass().is(Message)
-
-    }
-
-    //@Test
-    void msgGeneratorTest(){
-        Message thisA01 = MessageGenerator.getA01()
-        assert thisA01.getClass().is(Message)
     }
 
 }

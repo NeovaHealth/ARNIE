@@ -29,12 +29,20 @@
         <level value="DEBUG"/>
     </logger>
     
+    <logger name="org.springframework">
+        <level value="DEBUG"/>
+    </logger>
+    
     <logger name="org.apache.activemq">
         <level value="INFO"/>
     </logger>
 
     <logger name="jdbc.resultset" >
         <level value="ERROR"/>
+    </logger>
+    
+    <logger name="jdbc.connection" >
+        <level value="ALL"/>
     </logger>
 
     <root>

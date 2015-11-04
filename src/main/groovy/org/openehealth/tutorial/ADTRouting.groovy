@@ -5,7 +5,9 @@ import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.Version
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
 import org.apache.camel.component.hl7.HL7DataFormat
+import org.apache.camel.processor.DeadLetterChannel
 import org.apache.camel.spring.SpringRouteBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 import static org.apache.camel.component.hl7.HL7.messageConforms
 
@@ -48,8 +50,8 @@ class ADTRouting extends SpringRouteBuilder{
         //entry point
         from(hl7listener)
             .unmarshal(hl7)
-            .setHeader("triggerEvent", {inbound -> inbound.in.body.getTriggerEvent()})
-            .setHeader("visitNameString", {inbound -> inbound.in.body.MSH[4].toString()})
+            .setHeader("triggerEvent", {it.in.body.getTriggerEvent()})
+            .setHeader("visitNameString", {it.in.body.MSH[4].toString()})
             //.setHeader("data", {inbound -> inbound.in[Message].toString()})
             .transform({it -> it.in.body.generateACK()})
             //.marshal(hl7)
@@ -83,6 +85,10 @@ class ADTRouting extends SpringRouteBuilder{
             .unmarshal(hl7)
             .to(msgHistory)
 
+
+        from("direct:deadLetter")
+            .convertBodyTo(String)
+            .to('file:target/output')
     }
     
 }

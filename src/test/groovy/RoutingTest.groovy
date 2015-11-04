@@ -30,12 +30,15 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Override
     public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:updateVisit)|(direct:msgLogging)|(direct:updateOrCreatePatient))";
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:updateVisit)|(direct:updateOrCreatePatient))";
     }
+
+    Patient patient1 = new Patient(nhsNumber: 1223334444, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
+
 
     @Test
     public void testA01() throws IOException, InterruptedException {
-        Resource input  = new ClassPathResource("/msg-01.hl7")
+        //Resource input  = new ClassPathResource("/msg-01.hl7")
         def gen = new MessageGenerator()
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
@@ -53,6 +56,22 @@ class RoutingTest extends CamelSpringTestSupport{
         assert answer.MSA[1].value == 'AA'
         assertMockEndpointsSatisfied()
     }
+
+    @Test
+    public void testA02() {
+        def gen = new MessageGenerator()
+
+        Patient transferPatient = new Patient()
+    }
+
+    @Test
+    public void testErrorHandling() {
+        Resource input = new ClassPathResource("/msg-ERR.hl7")
+
+        template.sendBody("direct:hl7listener", input.getInputStream())
+
+    }
+
 
     @Test
     void testA08() throws InterruptedException, IOException {

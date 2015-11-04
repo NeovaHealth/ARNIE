@@ -58,7 +58,7 @@ class ADTRouting extends SpringRouteBuilder{
         from(hl7router)
             .validate(messageConforms())
             .to("routingSlip")
-
+            .to(msgHistory)
 
         from(inputQueue)
             //.unmarshal(hl7)
@@ -66,7 +66,6 @@ class ADTRouting extends SpringRouteBuilder{
 
         from(admit)
             .transform({it -> it})
-            .to(msgHistory)
 
         from(transfer)
             .transform({it -> it})

@@ -36,40 +36,39 @@ class RoutingTest extends CamelSpringTestSupport{
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:updateVisit)|(direct:updateOrCreatePatient))";
     }
 
-    @Autowired
-    CamelContext camelContext
+    MessageGenerator gen
 
-    Patient patient1 = new Patient(nhsNumber: 1223334444, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
+    Patient dummy1, dummy2
 
-    Patient dummy1
-
-    MockEndpoint admitEndpoint
+    MockEndpoint admitEndpoint, transferEndpoint, dischargeEndpoint, visitUpdateEndpoint, patientUpdateEndpoint
+    Message answer
 
     @Before
     void setUp() {
         super.setUp()
 
-        dummy1 = new Patient()
-        admitEndpoint = getMockEndpoint("mock:direct:admit")
+        gen = new MessageGenerator()
 
+        dummy1 = new Patient(nhsNumber: 1223334444, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
+        admitEndpoint = getMockEndpoint("mock:direct:admit")
+        transferEndpoint = getMockEndpoint("mock:direct:transfer")
+        visitUpdateEndpoint = getMockEndpoint("mock:direct:updateVisit")
+        patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
     }
 
 
     @Test
     void testA01() throws IOException, InterruptedException {
         //Resource input  = new ClassPathResource("/msg-01.hl7")
-        def gen = new MessageGenerator()
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
         def msg01 = gen.createMessage('A01', admitPatient, '2.2')
 
         admitEndpoint.expectedMessageCount(1)
-
-        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer")
         transferEndpoint.expectedMessageCount(0)
 
-        Message answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg01.encode())
+        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg01.encode())
 
         assert dummy1.getClass() == Patient
         assert answer.MSA[1].value == 'AA'
@@ -78,9 +77,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA02() {
-        def gen = new MessageGenerator()
 
-        Patient transferPatient = new Patient()
     }
 
     @Test
@@ -96,24 +93,16 @@ class RoutingTest extends CamelSpringTestSupport{
     @Test
     void testA08() throws InterruptedException, IOException {
         //Resource input = new ClassPathResource("/msg-08.hl7");
-        def gen = new MessageGenerator()
 
         Patient updatePatient = new Patient(nhsNumber: '0123456789')
         def msg08 = gen.createMessage('A08', updatePatient, '2.2')
 
-        MockEndpoint visitUpdateEndpoint = getMockEndpoint("mock:direct:updateVisit");
         visitUpdateEndpoint.expectedMessageCount(1);
-
-        MockEndpoint patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
         patientUpdateEndpoint.expectedMessageCount(1)
-
-        MockEndpoint admitEndpoint = getMockEndpoint("mock:direct:admit");
         admitEndpoint.expectedMessageCount(0);
-
-        MockEndpoint transferEndpoint = getMockEndpoint("mock:direct:transfer");
         transferEndpoint.expectedMessageCount(0);
 
-        Message answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg08.encode())
+        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg08.encode())
 
         assert answer.MSA[1].value == 'AA'
         assertMockEndpointsSatisfied();

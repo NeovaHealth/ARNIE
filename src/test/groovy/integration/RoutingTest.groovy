@@ -1,11 +1,10 @@
 package integration
+
+import ca.uhn.hl7v2.model.Message
+
 /**
  * Created by gregorlenz on 16/09/15.
  */
-import ca.uhn.hl7v2.model.Message
-import org.apache.camel.CamelContext
-import org.springframework.beans.factory.annotation.Autowired
-import support.MessageGenerator
 import org.apache.camel.ExchangePattern
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
@@ -20,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener
+import support.MessageGenerator
 import support.Patient
 
 @RunWith(SpringJUnit4ClassRunner.class)

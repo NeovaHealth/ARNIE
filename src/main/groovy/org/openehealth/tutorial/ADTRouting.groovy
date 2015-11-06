@@ -4,11 +4,8 @@ import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.Version
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
-import org.apache.camel.LoggingLevel
 import org.apache.camel.component.hl7.HL7DataFormat
-import org.apache.camel.processor.DeadLetterChannel
 import org.apache.camel.spring.SpringRouteBuilder
-import org.springframework.beans.factory.annotation.Autowired
 
 import static org.apache.camel.component.hl7.HL7.messageConforms
 

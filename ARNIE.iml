@@ -24,10 +24,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:2.15.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:2.15.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.15.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-test-spring:2.15.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-test-spring:2.15.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.1.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.1.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.1.5.RELEASE" level="project" />
@@ -60,15 +60,15 @@
     <orderEntry type="library" name="Maven: org.openehealth.ipf.gazelle:ipf-gazelle-validation-commons-core:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.openehealth.ipf.gazelle:ipf-gazelle-validation-profiles-core:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-hl7:2.15.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-groovy:2.14.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-sql:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-groovy:2.15.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-sql:2.15.4" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.3-1103-jdbc41" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-dbcp2:2.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.4.2" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.log4jdbc:log4jdbc:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.2.1.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-jdbc:2.15.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-jdbc:2.15.4" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-structures-v22:2.2" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-base:2.2" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi:hapi-structures-v23:2.2" level="project" />
@@ -153,7 +153,7 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.sonar:sonar-maven-plugin:5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.camel:camel-test:2.15.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.camel:camel-test:2.15.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:4.1.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:4.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.2.1.RELEASE" level="project" />

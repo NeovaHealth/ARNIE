@@ -39,7 +39,7 @@ When(~/an A03 message using HL7 version "([^"]+)" is sent to ARNIE./) {
     throw new PendingException()
 }
 
-Given(~/the eObs API is ready/) {
+Given(~/the eObs unit.API is ready/) {
     steps.patientDischargeSteps
 
 }

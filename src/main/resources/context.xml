@@ -13,7 +13,7 @@ http://camel.apache.org/schema/spring/camel-spring.xsd
 http://openehealth.org/schema/ipf-commons-core
 http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <camel:camelContext id="camelContext">
+    <camel:camelContext id="camelContext" errorHandlerRef="testErrorHandler">
         <camel:jmxAgent id="agent" disabled="true"/>
         <camel:routeBuilder ref="routeBuilder"/>
     </camel:camelContext>
@@ -22,7 +22,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
 
     <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (type, hospital_number, visit_id) values (:#triggerEvent, 234568, :#visitNameString)"/>
 
-    <camel:errorHandler id="testErrorHandler" type="DeadLetterChannel" deadLetterUri="direct:deadLetter" useOriginalMessage="true" />
+    <camel:errorHandler id="testErrorHandler" type="DeadLetterChannel" deadLetterUri="output" useOriginalMessage="true" />
 
     <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
 

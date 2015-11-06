@@ -47,8 +47,7 @@ public class MessageGenerator {
     }
 
     Message createMessage(String event, Patient patient, String version){
-        event = 'ADT_' + event
-        Message msg = Message."$event"(version)
+        Message msg = Message."ADT_$event"(version)
 
         msg.with {
             PID[2] = patient.nhsNumber

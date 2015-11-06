@@ -13,6 +13,8 @@ public class ComputeRoutingSlip {
 
         String msgTrigger = inboundMsg.getTriggerEvent()
 
+        configSupport.get
+
         switch (msgTrigger){
             case 'A01': return "direct:updateOrCreatePatient, direct:admit"
             case 'A02': return "direct:updateOrCreatePatient, direct:transfer"

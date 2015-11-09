@@ -5,7 +5,7 @@ package org.openehealth.tutorial
  */
 
 class configSupport {
-    final ConfigObject values = new ConfigSlurper().parse(new File("/home/gregorlenz/Development/ipf-hl7/src/main/resources/config.txt").toURI().toURL())
+    final ConfigObject values = new ConfigSlurper().parse(new File("./src/main/resources/config.txt").toURI().toURL())
 
 /*
     final family_name = configFile.common.family_name

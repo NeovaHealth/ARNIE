@@ -7,13 +7,14 @@ import org.apache.camel.RoutingSlip
  * Created by gregorlenz on 10/09/15.
  */
 public class ComputeRoutingSlip {
+    def configParser = new configSupport()
 
     @RoutingSlip
     String messageSteps(Message inboundMsg) {
 
         String msgTrigger = inboundMsg.getTriggerEvent()
 
-        configSupport.get
+        //return configParser.getRoutingSlips().get(msgTrigger)
 
         switch (msgTrigger){
             case 'A01': return "direct:updateOrCreatePatient, direct:admit"

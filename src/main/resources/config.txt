@@ -20,7 +20,7 @@ misc {
 }
 
 Routing_Slips {
-  A01 = ["direct:updateOrCreatePatient", "direct:admit"]
+  A01 = "'direct:updateOrCreatePatient', 'direct:admit'"
   A02 = ["direct:updateOrCreatePatient", "direct:transfer", "direct:updateVisit"]
   A03 = ["direct:updateOrCreatePatient", "direct:discharge"]
   A05 = ["direct:updateOrCreatePatient"]

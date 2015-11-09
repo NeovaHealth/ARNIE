@@ -20,7 +20,7 @@ class ADTRouting extends SpringRouteBuilder {
         ValidationRuleBuilder builder = new ValidationRuleBuilder(){
             @Override
             protected void configure(){
-                forVersion(Version.V22)
+                forVersion(Version.V24)
                 .message("ADT", "A01")
                 .terser("PID-8", not(empty()));
             }

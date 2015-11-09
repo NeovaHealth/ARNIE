@@ -33,7 +33,8 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Override
     public String isMockEndpointsAndSkip(){
-        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|(direct:updateVisit)|(direct:updateOrCreatePatient))";
+        return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|" +
+                "(direct:updateVisit)|(direct:updateOrCreateVisit)|(direct:updateOrCreatePatient))";
     }
 
     MessageGenerator gen
@@ -52,6 +53,7 @@ class RoutingTest extends CamelSpringTestSupport{
         dummy1 = new Patient(nhsNumber: 1223334444, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
         admitEndpoint = getMockEndpoint("mock:direct:admit")
         transferEndpoint = getMockEndpoint("mock:direct:transfer")
+        dischargeEndpoint = getMockEndpoint("mock:direct:discharge")
         visitUpdateEndpoint = getMockEndpoint("mock:direct:updateVisit")
         patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
     }
@@ -59,7 +61,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA01() throws IOException, InterruptedException {
-        Resource input  = new ClassPathResource("/msg-01.hl7")
+        //Resource input  = new ClassPathResource("/msg-01.hl7")
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
@@ -68,7 +70,7 @@ class RoutingTest extends CamelSpringTestSupport{
         admitEndpoint.expectedMessageCount(1)
         transferEndpoint.expectedMessageCount(0)
 
-        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input.getInputStream())
+        answer = template.requestBody("direct:hl7listener", msg01.encode())
 
         assert dummy1.getClass() == Patient
         assert answer.MSA[1].value == 'AA'
@@ -77,27 +79,48 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA02() {
+        def msg02 = gen.createMessage('A02', dummy1, '2.5')
+        patientUpdateEndpoint.expectedMessageCount(1)
+        transferEndpoint.expectedMessageCount(1)
+        visitUpdateEndpoint.expectedMessageCount(1)
+        admitEndpoint.expectedMessageCount(0)
 
+        answer = template.requestBody("direct:hl7listener", msg02.encode())
+
+        assert answer.MSA[1].value == 'AA'
+        assertMockEndpointsSatisfied()
     }
 
     @Test
+    void testA03() {
+        def msg03 = gen.createMessage('A03', dummy1, '2.2')
+        patientUpdateEndpoint.expectedMessageCount(1)
+        dischargeEndpoint.expectedMessageCount(1)
+        admitEndpoint.expectedMessageCount(0)
+        transferEndpoint.expectedMessageCount(0)
+
+        answer = template.requestBody("direct:hl7listener", msg03.encode())
+
+        assert answer.MSA[1].value == 'AA'
+        assertMockEndpointsSatisfied()
+    }
+
+    /*@Test
     void testErrorHandling() {
         Resource input = new ClassPathResource("/msg-ERR.hl7")
 
         template.sendBody("direct:hl7listener", input.getInputStream())
 
-        assert input == new ClassPathResource("target/output/*")
-    }
+        assert input == new ClassPathResource("target/output*//*")
+    }*/
 
 
     @Test
     void testA08() throws InterruptedException, IOException {
         //Resource input = new ClassPathResource("/msg-08.hl7");
-
         Patient updatePatient = new Patient(nhsNumber: '0123456789')
         def msg08 = gen.createMessage('A08', updatePatient, '2.2')
 
-        visitUpdateEndpoint.expectedMessageCount(1);
         patientUpdateEndpoint.expectedMessageCount(1)
         admitEndpoint.expectedMessageCount(0);
         transferEndpoint.expectedMessageCount(0);
@@ -108,7 +131,7 @@ class RoutingTest extends CamelSpringTestSupport{
         assertMockEndpointsSatisfied();
     }
 
-    @Test
+    //@Test
     void testPostgres() {
         Resource input = new ClassPathResource("/msg-08.hl7")
 

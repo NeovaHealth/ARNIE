@@ -14,19 +14,7 @@ public class ComputeRoutingSlip {
 
         String msgTrigger = inboundMsg.getTriggerEvent()
 
-        //return configParser.getRoutingSlips().get(msgTrigger)
-
-        switch (msgTrigger){
-            case 'A01': return "direct:updateOrCreatePatient, direct:admit"
-            case 'A02': return "direct:updateOrCreatePatient, direct:transfer"
-            case 'A03': return "direct:updateOrCreatePatient, direct:discharge"
-            case 'A08': return "direct:updateOrCreatePatient, direct:updateVisit"
-            case 'A11': return "direct:updateOrCreatePatient, direct:cancelAdmit"
-            case 'A12': return "direct:updateOrCreatePatient, direct:cancelTransfer"
-            case 'A13': return "direct:updateOrCreatePatient, direct:cancelDischarge"
-            case 'A31': return "direct:updateOrCreatePatient"
-            default: return
-        }
+        return configParser.getRoutingSlips().get(msgTrigger)
     }
 
 }

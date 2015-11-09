@@ -41,6 +41,9 @@ class ADTRouting extends SpringRouteBuilder {
         String discharge = "direct:discharge"
         String updatePatient = "direct:updateOrCreatePatient"
         String updateVisit = "direct:updateVisit"
+        String updateOrCreateVisit = "direct:updateOrCreateVisit"
+        String detectHistorical = "direct:detectHistorical"
+
 
         String msgLogging = "direct:msgLogging"
         String msgHistory = "msgHistory"
@@ -86,6 +89,11 @@ class ADTRouting extends SpringRouteBuilder {
             .unmarshal(hl7)
             .to(msgHistory)
 
+        from(detectHistorical)
+            .transform({it -> it})
+
+        from(updateOrCreateVisit)
+            .transform({it -> it})
 
         from("direct:deadLetter")
             .convertBodyTo(String)

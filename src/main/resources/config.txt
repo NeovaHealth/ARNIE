@@ -20,17 +20,17 @@ misc {
 }
 
 Routing_Slips {
-  A01 = "'direct:updateOrCreatePatient', 'direct:admit'"
-  A02 = ["direct:updateOrCreatePatient", "direct:transfer", "direct:updateVisit"]
-  A03 = ["direct:updateOrCreatePatient", "direct:discharge"]
-  A05 = ["direct:updateOrCreatePatient"]
-  A08 = ["direct:detectHistorical", "direct:updateOrCreatePatient","direct:updateOrCreateVisit"]
-  A11 = ["direct:updateOrCreatePatient", "direct:cancelAdmit"]
-  A12 = ["direct:updateOrCreatePatient", "direct:cancelTransfer"]
-  A13 = ["direct:updateOrCreatePatient", "direct:cancelDischarge"]
-  A28 = ["direct:register"]
-  A31 = ["direct:updateOrCreatePatient"]
-  A40 = ["direct:updateOrCreatePatient", "direct:merge"]
+  A01 = "direct:updateOrCreatePatient, direct:admit"
+  A02 = "direct:updateOrCreatePatient, direct:transfer, direct:updateVisit"
+  A03 = "direct:updateOrCreatePatient, direct:discharge"
+  A05 = "direct:updateOrCreatePatient"
+  A08 = "direct:detectHistorical, direct:updateOrCreatePatient, direct:updateOrCreateVisit"
+  A11 = "direct:updateOrCreatePatient, direct:cancelAdmit"
+  A12 = "direct:updateOrCreatePatient, direct:cancelTransfer"
+  A13 = "direct:updateOrCreatePatient, direct:cancelDischarge"
+  A28 = "direct:register"
+  A31 = "direct:updateOrCreatePatient"
+  A40 = "direct:updateOrCreatePatient, direct:merge"
 }
 
 ADT_mappings {

@@ -23,7 +23,8 @@ class configParsing {
 
     @Test
     void routingSlips() {
-        assert configFile.getRoutingSlips().get('A01').toString() == "direct:updateOrCreatePatient, direct:admit"
-        assert configFile.getRoutingSlips().get('A02').toString() == "direct:updateOrCreatePatient, direct:transfer, direct:updateVisit"
+        assert configFile.getRoutingSlips().get('A01') == "direct:updateOrCreatePatient, direct:admit"
+        assert configFile.getRoutingSlips().get('A02') == "direct:updateOrCreatePatient, direct:transfer, direct:updateVisit"
+        assert configFile.getRoutingSlips().get('A03') == "direct:updateOrCreatePatient, direct:discharge"
     }
 }

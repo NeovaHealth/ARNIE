@@ -3,7 +3,7 @@ package unit
 import junit.framework.TestSuite
 import org.junit.Before
 import org.junit.Test
-import org.openehealth.tutorial.configSupport
+import uk.co.neovahealth.ARNIE.configSupport
 
 /**
  * Created by gregorlenz on 06/11/15.

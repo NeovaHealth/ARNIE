@@ -1,4 +1,4 @@
-package org.openehealth.tutorial
+package uk.co.neovahealth.ARNIE
 
 import org.apache.camel.model.ProcessorDefinition
 

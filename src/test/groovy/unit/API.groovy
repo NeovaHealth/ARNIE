@@ -4,7 +4,7 @@ import junit.framework.TestSuite
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.openehealth.tutorial.eObsCalls
+import uk.co.neovahealth.ARNIE.eObsCalls
 
 /**
  * Created by gregorlenz on 06/11/15.

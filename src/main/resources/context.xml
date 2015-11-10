@@ -24,9 +24,9 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
 
     <camel:errorHandler id="testErrorHandler" type="DeadLetterChannel" deadLetterUri="output" useOriginalMessage="true" />
 
-    <bean id="routeBuilder" class="org.openehealth.tutorial.ADTRouting"/>
+    <bean id="routeBuilder" class="uk.co.neovahealth.ARNIE.ADTRouting"/>
 
-    <bean id="routingSlip" class="org.openehealth.tutorial.ComputeRoutingSlip"/>
+    <bean id="routingSlip" class="uk.co.neovahealth.ARNIE.ComputeRoutingSlip"/>
 
 	<ipf:globalContext id="globalContext"/>
 
@@ -46,7 +46,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="myCustomRules" class="org.openehealth.tutorial.SampleRulesBuilder"/>
+    <bean id="myCustomRules" class="uk.co.neovahealth.ARNIE.SampleRulesBuilder"/>
 
 </beans>
 

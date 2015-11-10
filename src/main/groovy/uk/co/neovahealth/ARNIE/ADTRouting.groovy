@@ -1,4 +1,4 @@
-package org.openehealth.tutorial
+package uk.co.neovahealth.ARNIE
 
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext

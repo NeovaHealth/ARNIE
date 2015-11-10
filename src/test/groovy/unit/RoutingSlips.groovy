@@ -2,7 +2,7 @@ package unit
 
 import org.junit.Before
 import org.junit.Test
-import org.openehealth.tutorial.ComputeRoutingSlip
+import uk.co.neovahealth.ARNIE.ComputeRoutingSlip
 import support.MessageGenerator
 import support.Patient
 

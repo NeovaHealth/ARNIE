@@ -1,4 +1,4 @@
-package org.openehealth.tutorial
+package uk.co.neovahealth.ARNIE
 
 import ca.uhn.hl7v2.model.Message
 import org.apache.camel.RoutingSlip

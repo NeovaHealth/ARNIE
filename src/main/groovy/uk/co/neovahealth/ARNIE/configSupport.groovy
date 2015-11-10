@@ -1,4 +1,4 @@
-package org.openehealth.tutorial
+package uk.co.neovahealth.ARNIE
 
 /**
  * Created by gregorlenz on 01/09/15.

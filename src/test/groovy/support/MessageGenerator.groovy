@@ -85,8 +85,8 @@ public class MessageGenerator {
         assert msg02.getClass().is(ca.uhn.hl7v2.model.v25.message.ADT_A02)
         assert msg02.PID[5][1].value == transferPatient.familyName
         assert msg02.PID[5][2].value == transferPatient.givenName
-        assert msg02.PID[8].value == null
-        assert msg02.PID[11][1] == transferPatient.address
+        assert msg02.PID[8].value == 'null'
+        assert msg02.PID[11][1].value == transferPatient.address
     }
 
     @Test

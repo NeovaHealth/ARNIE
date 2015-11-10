@@ -7,6 +7,6 @@
 
     <!--<import resource="classpath:mockContext.xml"/>-->
 
-    <bean id="testBean" class="support.Patient"></bean>
+    <bean id="testBean" class="cucumberSupport.Patient"></bean>
 
 </beans>

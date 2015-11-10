@@ -1,7 +1,9 @@
 package steps
 
 import ca.uhn.hl7v2.model.Message
-import support.*
+import cucumberSupport.CamelConnector
+import cucumberSupport.MessageCreation
+import cucumberSupport.Patient
 
 import static cucumber.api.groovy.EN.*
 import static cucumber.api.groovy.Hooks.Before

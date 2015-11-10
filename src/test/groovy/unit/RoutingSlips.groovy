@@ -1,6 +1,5 @@
 package unit
 
-import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Before
 import org.junit.Test
 import org.openehealth.tutorial.ComputeRoutingSlip

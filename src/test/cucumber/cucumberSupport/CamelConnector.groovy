@@ -1,4 +1,4 @@
-package support
+package cucumberSupport
 
 import ca.uhn.hl7v2.model.Message
 import org.apache.camel.ExchangePattern

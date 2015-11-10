@@ -1,11 +1,9 @@
-package support
+package cucumberSupport
 
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
-import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
-import org.junit.BeforeClass
 import org.openehealth.ipf.commons.core.config.ContextFacade
 import org.openehealth.ipf.commons.core.config.Registry
 import org.openehealth.ipf.commons.map.BidiMappingService

@@ -3,9 +3,9 @@ package support
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
-import ca.uhn.hl7v2.model.v22.segment.PV1
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
+import support.Patient
 import org.junit.BeforeClass
 import org.junit.Test
 import org.openehealth.ipf.commons.core.config.ContextFacade

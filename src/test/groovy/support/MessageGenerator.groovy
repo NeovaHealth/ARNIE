@@ -3,6 +3,7 @@ package support
 import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.model.Message
+import ca.uhn.hl7v2.model.v22.segment.PV1
 import ca.uhn.hl7v2.parser.CustomModelClassFactory
 import ca.uhn.hl7v2.parser.ModelClassFactory
 import org.junit.BeforeClass
@@ -78,7 +79,7 @@ public class MessageGenerator {
     }
 
     @Test
-    void createGenericA02Message(){
+    void createGenericA02Message() {
         Patient transferPatient = new Patient(familyName:'Simpson', givenName:'Marge', address: 'High Street', admitLocation: '06BN')
         def msg02 = createMessage('A02', transferPatient, '2.5')
 
@@ -90,10 +91,20 @@ public class MessageGenerator {
     }
 
     @Test
-    void createGenericA03Message(){
+    void createGenericA03Message() {
         Patient dischargePatient = new Patient(familyName:'Simpson', givenName:'Bart', admitLocation: '06BN')
         def msg03 = createMessage('A03', dischargePatient, '2.6')
         assert msg03.getClass().is(ca.uhn.hl7v2.model.v26.message.ADT_A03)
         assert msg03.PID[5][2].value == 'Bart'
+    }
+
+    @Test
+    void createGenericA31Message() {
+        Patient updatePatient = new Patient(familyName: 'Simpson', givenName: 'Barto', address: 'Down Street')
+        def msg31 = createMessage('A31', updatePatient, '2.3')
+        assert msg31.getClass().is(ca.uhn.hl7v2.model.v23.message.ADT_A31)
+        assert msg31.PID[5][1].value == updatePatient.familyName
+        assert msg31.PID[5][2].value == updatePatient.givenName
+        assert msg31.PID[11][1].value == updatePatient.address
     }
 }

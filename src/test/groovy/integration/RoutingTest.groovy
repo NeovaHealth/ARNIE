@@ -5,7 +5,6 @@ import ca.uhn.hl7v2.model.Message
 /**
  * Created by gregorlenz on 16/09/15.
  */
-import org.apache.camel.ExchangePattern
 import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Before
@@ -13,8 +12,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
-import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.Resource
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
@@ -105,40 +102,17 @@ class RoutingTest extends CamelSpringTestSupport{
         assertMockEndpointsSatisfied()
     }
 
-    /*@Test
-    void testErrorHandling() {
-        Resource input = new ClassPathResource("/msg-ERR.hl7")
-
-        template.sendBody("direct:hl7listener", input.getInputStream())
-
-        assert input == new ClassPathResource("target/output*//*")
-    }*/
-
-
     @Test
-    void testA08() throws InterruptedException, IOException {
-        //Resource input = new ClassPathResource("/msg-08.hl7");
-        Patient updatePatient = new Patient(nhsNumber: '0123456789')
-        def msg08 = gen.createMessage('A08', updatePatient, '2.2')
-
+    void testA31() {
+        def msg31 = gen.createMessage('A31', dummy1, '2.4')
         patientUpdateEndpoint.expectedMessageCount(1)
-        admitEndpoint.expectedMessageCount(0);
-        transferEndpoint.expectedMessageCount(0);
+        admitEndpoint.expectedMessageCount(0)
+        transferEndpoint.expectedMessageCount(0)
+        dischargeEndpoint.expectedMessageCount(0)
 
-        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg08.encode())
+        answer = template.requestBody("direct:hl7listener", msg31.encode())
 
-        assert answer.MSA[1].value == 'AA'
-        assertMockEndpointsSatisfied();
-    }
-
-    //@Test
-    void testPostgres() {
-        Resource input = new ClassPathResource("/msg-08.hl7")
-
-        MockEndpoint msgHistory = getMockEndpoint("mock:direct:msgLogging")
-        msgHistory.expectedMessageCount(1)
-
-        template.sendBody("direct:msgLogging", input.getInputStream())
+        assert  answer.MSA[1].value == 'AA'
         assertMockEndpointsSatisfied()
     }
 

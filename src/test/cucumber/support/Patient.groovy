@@ -23,4 +23,7 @@ class Patient {
     //A03
     String dischargeLocation
 
+    //A08
+    String referringDoctorGivenName
+    String referringDoctorFamilyName
 }

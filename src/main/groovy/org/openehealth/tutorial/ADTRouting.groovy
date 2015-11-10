@@ -39,10 +39,11 @@ class ADTRouting extends SpringRouteBuilder {
         String admit = "direct:admit"
         String transfer = "direct:transfer"
         String discharge = "direct:discharge"
-        String updatePatient = "direct:updateOrCreatePatient"
+        String updateOrCreatePatient = "direct:updateOrCreatePatient"
         String updateVisit = "direct:updateVisit"
         String updateOrCreateVisit = "direct:updateOrCreateVisit"
         String detectHistorical = "direct:detectHistorical"
+        String patientRegister = "direct:register"
 
 
         String msgLogging = "direct:msgLogging"
@@ -79,7 +80,7 @@ class ADTRouting extends SpringRouteBuilder {
         from(discharge)
             .transform({it -> it})
 
-        from(updatePatient)
+        from(updateOrCreatePatient)
             .transform({it -> it})
 
         from(updateVisit)
@@ -93,6 +94,9 @@ class ADTRouting extends SpringRouteBuilder {
             .transform({it -> it})
 
         from(updateOrCreateVisit)
+            .transform({it -> it})
+
+        from(patientRegister)
             .transform({it -> it})
 
         from("direct:deadLetter")

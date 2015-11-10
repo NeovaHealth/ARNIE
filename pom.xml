@@ -312,6 +312,39 @@
                     <artifactId>maven-eclipse-plugin</artifactId>
                     <version>${eclipse-plugin-version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19</version>
+                    <executions>
+                        <execution>
+                            <id>default-test</id>
+                            <configuration>
+                                <includes>
+                                    <include>**/unit/**</include>
+                                </includes>
+                                <excludes>
+                                    <exclude>**/integration/**</exclude>
+                                </excludes>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>integration-test</id>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                            <configuration>
+                                <includes>
+                                    <exclude>**/integration/**</exclude>
+                                </includes>
+                                <excludes>
+                                    <include>**/unit/**</include>
+                                </excludes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 

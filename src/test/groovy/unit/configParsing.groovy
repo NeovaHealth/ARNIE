@@ -1,5 +1,6 @@
 package unit
 
+import junit.framework.TestSuite
 import org.junit.Before
 import org.junit.Test
 import org.openehealth.tutorial.configSupport
@@ -7,7 +8,7 @@ import org.openehealth.tutorial.configSupport
 /**
  * Created by gregorlenz on 06/11/15.
  */
-class configParsing {
+class configParsing extends TestSuite{
     def configFile
 
     @Before

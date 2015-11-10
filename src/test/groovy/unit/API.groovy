@@ -1,5 +1,6 @@
 package unit
 
+import junit.framework.TestSuite
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -8,7 +9,7 @@ import org.openehealth.tutorial.eObsCalls
 /**
  * Created by gregorlenz on 06/11/15.
  */
-class API {
+class API extends TestSuite{
     private caller
 
     @Before

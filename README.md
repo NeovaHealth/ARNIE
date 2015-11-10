@@ -1,9 +1,8 @@
 # ARNIE
 
 ARNIE Resilient NeovaHealth Integration Engine 
-Master branch: [![Build Status](https://travis-ci.org/NeovaHealth/ARNIE.svg?branch=master)](https://travis-ci.org/NeovaHealth/ARNIE)
 
-utilizing IPF 
+Master branch: [![Build Status](https://travis-ci.org/NeovaHealth/ARNIE.svg?branch=master)](https://travis-ci.org/NeovaHealth/ARNIE)
 
 ![alt tag](https://github.com/NeovaHealth/ARNIE/blob/master/ARNIE%20overview.png)
 
@@ -17,5 +16,4 @@ All messages are stored in a PostgreSQL endpoint, separated in tables of success
 
 Contributions more than welcome!
 
-Feel free to contact me for questions:
-Gregor Lenz <gregorlenz@neovahealth.co.uk>
+Feel free to contact the maintainer for questions: Gregor Lenz <gregorlenz@neovahealth.co.uk>

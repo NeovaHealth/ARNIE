@@ -1,6 +1,6 @@
 # ARNIE
 
-ARNIE Resilient NeovaHealth Integration Engine
+ARNIE Resilient NeovaHealth Integration Engine [![Build Status](https://travis-ci.org/NeovaHealth/ARNIE.svg?branch=master)](https://travis-ci.org/NeovaHealth/ARNIE)
 
 utilizing IPF https://github.com/oehf/ipf
 

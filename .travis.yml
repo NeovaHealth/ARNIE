@@ -10,9 +10,9 @@ addons:
 services:
   - postgresql
 
-before_install: ./pg_setup.sh
-
-script: mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
+script:
+  - ./pg_setup.sh
+  - mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

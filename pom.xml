@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.openehealth.tutorial</groupId>
+    <groupId>uk.co.neovahealth.ARNIE</groupId>
     <artifactId>ARNIE</artifactId>
-    <name>hl7</name>
+    <name>ARNIE</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -395,14 +395,6 @@
             <plugin>
             	<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/bin.xml</descriptor>
-                    </descriptors>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

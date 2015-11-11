@@ -10,7 +10,7 @@ addons:
 services:
   - postgresql
 
-script: mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
+script: mvn cobertura:cobertura -Dcobertura.report.format=xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -4,4 +4,13 @@ jdk:
   - oraclejdk7
   - oraclejdk8
 
-script: mvn test
+addons:
+  postgresql: "9.3"
+
+services:
+  - postgresql
+
+script: mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

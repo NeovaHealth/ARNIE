@@ -27,7 +27,7 @@ class CamelConnector extends CamelSpringTestSupport{
         //this is key to test routes of a camelContext properly
         this.setUp()
 
-        Message answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input)
+        Message answer = template.requestBody("direct:hl7listener", input)
         template.sendBody("direct:msgLogging", input)
 
         return answer

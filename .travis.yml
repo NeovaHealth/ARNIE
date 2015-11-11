@@ -11,7 +11,7 @@ services:
   - postgresql
 
 script:
-  - ./pg_setup.sh
+  - bash pg_setup.sh
   - mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
 
 after_success:

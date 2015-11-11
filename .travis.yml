@@ -14,7 +14,7 @@ before_script:
   - psql -c 'CREATE TABLE MSG_HISTORY (id TEXT, TYPE VARCHAR(10), HOSPITAL_NUMBER TEXT, VISIT_ID TEXT,timestamp VARCHAR(100), data TEXT);' -U postgres
   - psql -c 'CREATE TABLE FAIL_MSG_HISTORY (id TEXT, TYPE VARCHAR(10), HOSPITAL_NUMBER TEXT, VISIT_ID TEXT, timestamp VARCHAR(100), exception TEXT, data TEXT);' -U postgres
 
-  - psql -c 'CREATE USER nhadt WITH PASSWORD 'nhadt'' -U postgres
+  - psql -c "CREATE USER nhadt WITH PASSWORD 'nhadt'" -U postgres
   - psql -c 'ALTER TABLE MSG_HISTORY OWNER TO nhadt;' -U postgres
   - psql -c 'ALTER TABLE FAIL_MSG_HISTORY OWNER TO nhadt;' -U postgres
 

@@ -2,7 +2,6 @@
 .idea
 .project
 .settings/
-hl7.iml
 logs.txt
 sonar-project.properties
 .sonar

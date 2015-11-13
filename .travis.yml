@@ -12,7 +12,7 @@ services:
 
 script:
   - bash pg_setup.sh
-  - mvn cobertura:cobertura-integration-test -Dcobertura.report.format=xml
+  - ./gradlew cobertura
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -3,7 +3,7 @@
 ARNIE Resilient NeovaHealth Integration Engine 
 
 Master branch: [![Build Status](https://travis-ci.org/NeovaHealth/ARNIE.svg?branch=master)](https://travis-ci.org/NeovaHealth/ARNIE)
-
+[![codecov.io](https://codecov.io/github/NeovaHealth/ARNIE/coverage.svg?branch=master)](https://codecov.io/github/NeovaHealth/ARNIE?branch=master)
 ![alt tag](https://github.com/NeovaHealth/ARNIE/blob/master/ARNIE%20overview.png)
 
 ARNIE is an Integration Engine that parses HL7 messages of multiple versions and transmits the information to another interface. 

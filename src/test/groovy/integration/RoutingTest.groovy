@@ -12,6 +12,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.Resource
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
@@ -58,7 +60,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA01() throws IOException, InterruptedException {
-        //Resource input  = new ClassPathResource("/msg-01.hl7")
+        Resource input  = new ClassPathResource("/msg-01.hl7")
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
@@ -67,7 +69,7 @@ class RoutingTest extends CamelSpringTestSupport{
         admitEndpoint.expectedMessageCount(1)
         transferEndpoint.expectedMessageCount(0)
 
-        answer = template.requestBody("direct:hl7listener", msg01.encode())
+        answer = template.requestBody("direct:hl7listener", input.getInputStream())
 
         assert dummy1.getClass() == Patient
         assert answer.MSA[1].value == 'AA'

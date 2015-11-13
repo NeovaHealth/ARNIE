@@ -1,0 +1,76 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'uk.co.neovahealth.ARNIE'
+version = '1.0-SNAPSHOT'
+
+description = """ARNIE"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+sourceSets {
+    integrationTest {
+        groovy {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration')
+        }
+    }
+}
+
+dependencies {
+    compile(group: 'org.apache.camel', name: 'camel-spring', version:'2.15.4') {
+exclude(module: 'spring-aop')
+exclude(module: 'jaxb-impl')
+exclude(module: 'jaxb-core')
+    }
+    compile group: 'org.apache.camel', name: 'camel-test-spring', version:'2.15.4'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.4'
+    compile group: 'org.openehealth.ipf.platform-camel', name: 'ipf-platform-camel-core', version:'3.0.2'
+    compile group: 'org.openehealth.ipf.commons', name: 'ipf-commons-map', version:'3.0.2'
+    compile group: 'org.openehealth.ipf.platform-camel', name: 'ipf-platform-camel-hl7', version:'3.0.2'
+    compile(group: 'org.apache.camel', name: 'camel-groovy', version:'2.15.4') {
+exclude(module: 'groovy-all')
+exclude(module: 'jaxb-impl')
+exclude(module: 'jaxb-core')
+    }
+    compile group: 'org.apache.camel', name: 'camel-sql', version:'2.15.4'
+    compile group: 'org.postgresql', name: 'postgresql', version:'9.3-1103-jdbc41'
+    compile group: 'org.apache.commons', name: 'commons-dbcp2', version:'2.1.1'
+    compile group: 'com.googlecode.log4jdbc', name: 'log4jdbc', version:'1.2'
+    compile group: 'org.springframework', name: 'spring-jdbc', version:'4.2.1.RELEASE'
+    compile group: 'org.apache.camel', name: 'camel-jdbc', version:'2.15.4'
+    compile group: 'ca.uhn.hapi', name: 'hapi-structures-v22', version:'2.2'
+    compile group: 'ca.uhn.hapi', name: 'hapi-structures-v23', version:'2.2'
+    compile group: 'ca.uhn.hapi', name: 'hapi-structures-v24', version:'2.2'
+    compile group: 'ca.uhn.hapi', name: 'hapi-structures-v25', version:'2.2'
+    compile group: 'ca.uhn.hapi', name: 'hapi-structures-v26', version:'2.2'
+    compile group: 'org.codehaus.mojo', name: 'cobertura-maven-plugin', version:'2.7'
+    compile(group: 'net.sourceforge.cobertura', name: 'cobertura', version:'2.1.1') {
+exclude(module: 'logback-classic')
+    }
+    compile group: 'org.codehaus.sonar', name: 'sonar-maven-plugin', version:'5.1'
+    compile group: 'org.springframework', name: 'spring-context-support', version:'4.2.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version:'4.2.1.RELEASE'
+    compile group: 'io.cucumber', name: 'gherkin3', version:'3.1.1'
+    compile group: 'info.cukes', name: 'cucumber-groovy', version:'1.2.4'
+    compile group: 'info.cukes', name: 'cucumber-jvm-deps', version:'1.0.5'
+    compile group: 'org.apache.maven.surefire', name: 'surefire-junit47', version:'2.19'
+    testCompile group: 'commons-logging', name: 'commons-logging', version:'1.2'
+    testCompile group: 'org.apache.camel', name: 'camel-test', version:'2.15.4'
+    testCompile group: 'org.springframework', name: 'spring-test', version:'4.1.5.RELEASE'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.12'
+    testCompile group: 'org.easymock', name: 'easymock', version:'3.4'
+    testCompile group: 'info.cukes', name: 'cucumber-core', version:'1.2.4'
+    testCompile group: 'info.cukes', name: 'cucumber-spring', version:'1.2.4'
+    testCompile group: 'info.cukes', name: 'cucumber-junit', version:'1.2.4'
+}

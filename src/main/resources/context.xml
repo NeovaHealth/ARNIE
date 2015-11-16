@@ -16,6 +16,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
     <camel:camelContext id="camelContext" errorHandlerRef="testErrorHandler">
         <camel:jmxAgent id="agent" disabled="true"/>
         <camel:routeBuilder ref="routeBuilder"/>
+        <camel:restConfiguration bindingMode="auto" component="restlet" port="8069"/>
     </camel:camelContext>
 
     <camel:endpoint id="output" uri="file:target/output"/>

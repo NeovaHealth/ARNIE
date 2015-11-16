@@ -69,10 +69,14 @@ class ADTRouting extends SpringRouteBuilder {
             .bean(ComputeRoutingSlip)
 
         from(admit)
-/*            .choice()
+                /*
+                .choice()
                 .when(caller.visitExists()).to("output").endChoice()
                 .otherwise()*/
                     .transform({it -> it})
+
+        rest("/register")
+            .get()
 
         from(transfer)
             .transform({it -> it})

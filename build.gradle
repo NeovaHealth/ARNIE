@@ -62,6 +62,7 @@ exclude(module: 'jaxb-impl')
 exclude(module: 'jaxb-core')
     }
     compile group: 'org.apache.camel', name: 'camel-test-spring', version: camelVersion
+    compile group: 'org.apache.camel', name: 'camel-restlet', version: camelVersion
     compile group: 'org.apache.camel', name: 'camel-sql', version: camelVersion
     compile group: 'org.apache.camel', name: 'camel-jdbc', version: camelVersion
     compile(group: 'org.apache.camel', name: 'camel-groovy', version: camelVersion) {

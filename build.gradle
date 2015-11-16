@@ -3,6 +3,8 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'idea'
 apply plugin: 'application'
+apply plugin: 'cobertura'
+apply plugin: "com.github.samueltbrown.cucumber"
 
 group = 'uk.co.neovahealth.ARNIE'
 version = '1.0-SNAPSHOT'
@@ -26,17 +28,29 @@ buildscript {
     dependencies {
         classpath "net.saliman:gradle-cobertura-plugin:2.2.2"
         classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.8.1'
+        classpath "com.github.samueltbrown:gradle-cucumber-plugin:0.9"
     }
 }
 
-apply plugin: 'cobertura'
 cobertura {
     coverageFormats = ['xml', 'html']
     coverageIncludes = ['**/*.java', '**/*.groovy']
     coverageSourceDirs = [sourceSets.main.allSource.srcDirs]
 }
 
+cucumber {
+    formats = ['pretty','json:build/cucumber.json','junit:build/cucumber.xml']
+    /*glueDirs = ['src/test/cucumber/cucumberSupport',
+                'src/test/cucumber/steps']*/
+    featureDirs = ['src/test/cucumber']
+    monochrome = false
+    strict = false
+    dryRun = false
+    ignoreFailures = false
+}
+
 dependencies {
+    cucumberRuntime 'info.cukes:cucumber-groovy:1.2.4'
     compile(group: 'org.apache.camel', name: 'camel-spring', version:'2.15.4') {
 exclude(module: 'spring-aop')
 exclude(module: 'jaxb-impl')

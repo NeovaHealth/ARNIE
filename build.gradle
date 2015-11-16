@@ -72,7 +72,7 @@ exclude(module: 'jaxb-core')
     testCompile group: 'org.apache.camel', name: 'camel-test', version:'2.15.4'
     testCompile group: 'org.springframework', name: 'spring-test', version:'4.1.5.RELEASE'
     testCompile group: 'junit', name: 'junit', version:'4.+'
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.12'
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.13'
     testCompile group: 'org.easymock', name: 'easymock', version:'3.4'
     testCompile group: 'info.cukes', name: 'cucumber-core', version:'1.2.4'
     testCompile group: 'info.cukes', name: 'cucumber-spring', version:'1.2.4'

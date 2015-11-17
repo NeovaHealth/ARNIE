@@ -62,21 +62,22 @@ class ADTRouting extends SpringRouteBuilder {
         from(hl7router)
             .validate(messageConforms())
             .to("routingSlip")
-            .to(msgHistory)
+            //.to(msgHistory)
 
         from(inputQueue)
             //.unmarshal(hl7)
             .bean(ComputeRoutingSlip)
 
-        from(admit)
-                /*
+        from(admit).routeId("admit").to(transfer)
+        /*
                 .choice()
                 .when(caller.visitExists()).to("output").endChoice()
-                .otherwise()*/
+                .otherwise()
                     .transform({it -> it})
+                    */
 
-        rest("/register")
-            .get()
+        /*rest("/register")
+            .get()*/
 
         from(transfer)
             .transform({it -> it})

@@ -15,6 +15,7 @@ class API extends TestSuite{
     @Before
     void setUp() {
         caller = new eObsCalls()
+        assert caller.login()
     }
 
     @After
@@ -30,6 +31,11 @@ class API extends TestSuite{
     @Test
     void patientExist() {
         assert caller.patientExists()
+    }
+
+    @Test
+    void patientRegister() {
+        assert caller.patientRegister()
     }
 
     @Test

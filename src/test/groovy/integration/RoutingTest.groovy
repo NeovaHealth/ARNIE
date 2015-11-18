@@ -66,8 +66,7 @@ class RoutingTest extends CamelSpringTestSupport{
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
         def msg01 = gen.createMessage('A01', admitPatient, '2.2')
         admitEndpoint.expectedMessageCount(1)
-        transferEndpoint.expectedMessageCount(1)
-        transferEndpoint.setResultWaitTime(3000)
+        transferEndpoint.expectedMessageCount(0)
 
         answer = template.requestBody("direct:hl7listener", msg01.encode())
 

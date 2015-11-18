@@ -23,7 +23,7 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
 
     <camel:endpoint id="msgHistory" uri="sql:insert into msg_history (type, hospital_number, visit_id) values (:#triggerEvent, 234568, :#visitNameString)"/>
 
-    <camel:errorHandler id="testErrorHandler" type="DeadLetterChannel" deadLetterUri="output" useOriginalMessage="true" />
+    <camel:errorHandler id="testErrorHandler" type="DeadLetterChannel" deadLetterUri="output"  />
 
     <bean id="routeBuilder" class="uk.co.neovahealth.ARNIE.ADTRouting"/>
 

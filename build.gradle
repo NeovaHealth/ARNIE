@@ -88,6 +88,7 @@ exclude(module: 'jaxb-core')
     compile group: 'io.cucumber', name: 'gherkin3', version:'3.1.1'
     compile group: 'info.cukes', name: 'cucumber-groovy', version: cucumberVersion
     compile group: 'info.cukes', name: 'cucumber-jvm-deps', version:'1.0.5'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     testCompile group: 'org.apache.camel', name: 'camel-test', version: camelVersion
     testCompile group: 'commons-logging', name: 'commons-logging', version:'1.2'
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion

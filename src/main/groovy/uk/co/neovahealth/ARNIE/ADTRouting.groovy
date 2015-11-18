@@ -4,6 +4,7 @@ import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.Version
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
+import org.apache.camel.Predicate
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
 
@@ -31,6 +32,9 @@ class ADTRouting extends SpringRouteBuilder {
         HL7DataFormat hl7 = new HL7DataFormat()
         hl7.setHapiContext(context)
 
+
+        def caller = new eObsCalls()
+        Predicate isA01 = header('triggerEvent').isEqualTo('A01')
 
         String hl7listener = "direct:hl7listener"
         String hl7router = "direct:hl7router"
@@ -62,22 +66,16 @@ class ADTRouting extends SpringRouteBuilder {
         from(hl7router)
             .validate(messageConforms())
             .to("routingSlip")
-            //.to(msgHistory)
+            .to(msgHistory)
 
         from(inputQueue)
             //.unmarshal(hl7)
             .bean(ComputeRoutingSlip)
 
-        from(admit).routeId("admit").to(transfer)
-        /*
-                .choice()
-                .when(caller.visitExists()).to("output").endChoice()
-                .otherwise()
-                    .transform({it -> it})
-                    */
-
-        /*rest("/register")
-            .get()*/
+        from(admit).routeId("admit")
+            .choice()
+                .when(isA01).process()
+                .otherwise.to(transfer)
 
         from(transfer)
             .transform({it -> it})

@@ -1,6 +1,7 @@
 package uk.co.neovahealth.ARNIE
 
 import groovyx.net.http.RESTClient
+import static groovyx.net.http.ContentType.TEXT
 
 
 /**
@@ -9,11 +10,12 @@ import groovyx.net.http.RESTClient
 class eObsCalls {
     def url = 'http://localhost:8069/'
     def client = new RESTClient(url)
-    def postBody = ["data": ["given_name": "John"], "patient_id": 6]
+    def origPostBody = '{"data": {"given_name":"John"}, "patient_id": 6}'
+    def postBody = ['patient_id': 17, 'data': ['given_name':'John', family_name: 'Test']]
     def loginBody = ["username": "adt", "password": "adt", "database": "nhclinical"]
 
     def login() {
-        client.post(path: 'mobile/login', query: loginBody) {resp, data ->
+        client.post(path: 'mobile/login', query: loginBody) { resp, data ->
             assert !data.text.contains('invalid')
             if (resp.status == 200 && !data.text.contains('invalid')) true
             else false
@@ -21,9 +23,11 @@ class eObsCalls {
     }
 
     def patientRegister() {
-        //client.auth.basic 'adt', 'adt'
-        client.post(path: 'adt/v1/patient/register', body: postBody) {resp, data ->
+        client.post(path: 'adt/v1/patient/register', body: origPostBody, requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
+            assert data.status == 'error'
+            println(data.description)
+            if (resp.status == 200) true
         }
     }
 

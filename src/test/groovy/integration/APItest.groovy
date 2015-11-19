@@ -18,7 +18,7 @@ class APItest extends CamelSpringTestSupport {
 
     @Test
     void registerCall() {
-        Resource input = new ClassPathResource("/msg-01.hl7")
+        //Resource input = new ClassPathResource("/msg-01.hl7")
 
 
     }

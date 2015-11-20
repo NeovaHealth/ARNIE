@@ -3,12 +3,10 @@ package uk.co.neovahealth.ARNIE
 import groovy.json.JsonSlurper
 import groovyx.net.http.RESTClient
 import org.apache.camel.Exchange
+import groovy.json.JsonBuilder
 
 import static groovyx.net.http.ContentType.TEXT
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.ContentType.ANY
-import static groovyx.net.http.ContentType.HTML
-
 
 
 /**
@@ -23,6 +21,15 @@ class eObsCalls {
     def hosp_number, patient_id, given_name, family_name, dob
     def payload = new JsonSlurper().parse(new File('payload.json'))
     def stringJSON = (String) payload
+    def toStringJSON = payload.toString()
+
+    def userId = 12
+    def age = 20 //For example
+    def email = "abc@xyz.com"
+
+    def json = new JsonBuilder()
+    def root = json userId: userId, age: age, email: email
+
 
     def login() {
         client.post(path: 'mobile/login', query: loginBody) { resp, data ->
@@ -33,15 +40,16 @@ class eObsCalls {
     }
 
     def patientRegister(Exchange inflight) {
-        hosp_number = inflight.in.body.PID[3][1].value
-        client.post(path: 'adt/v1/patient/register', body: (String) payload, requestContentType: TEXT) { resp, data ->
+        hosp_number = inflight.in.body.PID[(3+1)][1].value
+        json.toString() //{"userId":12,"age":20,"email":"abc@xyz.com"}
+
+        client.post(path: 'adt/v1/patient/register', body: payload, requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
             assert data.status == 'success'
             println(data.description)
             if (resp.status == 200) true
         }
     }
-
 
 
     def patientAdmit() {

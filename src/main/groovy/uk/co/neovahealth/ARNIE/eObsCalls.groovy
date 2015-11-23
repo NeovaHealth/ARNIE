@@ -28,7 +28,9 @@ class eObsCalls {
     def email = "abc@xyz.com"
 
     def json = new JsonBuilder()
-    def root = json userId: userId, age: age, email: email
+    def databuilder = new JsonBuilder()
+    def data = databuilder given_name: 'Arthur', family_name: 'Nudge'
+    def total = json data: databuilder, patient_id: '10'
 
 
     def login() {
@@ -41,9 +43,8 @@ class eObsCalls {
 
     def patientRegister(Exchange inflight) {
         hosp_number = inflight.in.body.PID[(3+1)][1].value
-        json.toString() //{"userId":12,"age":20,"email":"abc@xyz.com"}
 
-        client.post(path: 'adt/v1/patient/register', body: payload, requestContentType: TEXT) { resp, data ->
+        client.post(path: 'adt/v1/patient/register', body: json.toString(), requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
             assert data.status == 'success'
             println(data.description)

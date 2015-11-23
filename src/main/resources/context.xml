@@ -29,6 +29,9 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
 
     <bean id="routingSlip" class="uk.co.neovahealth.ARNIE.ComputeRoutingSlip"/>
 
+    <bean id="eObsCalls" class="uk.co.neovahealth.ARNIE.eObsCalls" />
+    <bean id="eObsQueries" class="uk.co.neovahealth.ARNIE.eObsQueries" />
+
 	<ipf:globalContext id="globalContext"/>
 
     <bean id="mappingService"

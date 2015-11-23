@@ -12,25 +12,16 @@ import static groovyx.net.http.ContentType.JSON
 /**
  * Created by gregorlenz on 06/11/15.
  */
-class eObsCalls {
+class eObsCalls extends ADTProcessing{
     def url = 'http://localhost:8069/'
     def client = new RESTClient(url)
-    def origPostBody = '{"data": {"given_name":"John"}, "patient_id": 7}'
-    def postBody = ['patient_id': 17, 'data': ['given_name':'John', family_name: 'Test']]
     def loginBody = ["username": "adt", "password": "adt", "database": "nhclinical"]
     def hosp_number, patient_id, given_name, family_name, dob
-    def payload = new JsonSlurper().parse(new File('payload.json'))
-    def stringJSON = (String) payload
-    def toStringJSON = payload.toString()
-
-    def userId = 12
-    def age = 20 //For example
-    def email = "abc@xyz.com"
 
     def json = new JsonBuilder()
     def databuilder = new JsonBuilder()
     def data = databuilder given_name: 'Arthur', family_name: 'Nudge'
-    def total = json data: databuilder, patient_id: '10'
+    def total = json data: data, patient_id: '10'
 
 
     def login() {
@@ -41,13 +32,13 @@ class eObsCalls {
         }
     }
 
-    def patientRegister(Exchange inflight) {
-        hosp_number = inflight.in.body.PID[(3+1)][1].value
+    Boolean patientRegister(Exchange inflight) {
+        data = databuilder given_name: 'Arthur', family_name: 'Nudge'
+        json patient_id: getHospitalNumber(inflight), data: data
 
         client.post(path: 'adt/v1/patient/register', body: json.toString(), requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
             assert data.status == 'success'
-            println(data.description)
             if (resp.status == 200) true
         }
     }
@@ -61,8 +52,17 @@ class eObsCalls {
         return true
     }
 
-    def patientDischarge() {
-        return true
+    def patientDischarge(Exchange inflight) {
+        json = new JsonBuilder()
+        data = databuilder given_name: 'Arthur', family_name: 'Nudge'
+        json patient_id: getHospitalNumber(inflight), data: data
+
+        client.post(path: 'adt/v1/patient/discharge', body: json.toString(), requestContentType: TEXT) { resp, data ->
+            assert resp.status == 200
+            assert data.status == 'success'
+            if (resp.status == 200 && data.status == 'success') true
+        }
+        return false
     }
 
     def patientNew() {

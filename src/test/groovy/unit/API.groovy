@@ -49,7 +49,7 @@ class API extends TestSuite{
 
     @Test
     void patientRegister() {
-        dummy.hospitalNumber = '11'
+        dummy.hospitalNumber = '12'
         message =  gen.createMessage('A01', dummy, '2.4')
         exchange.in.body = message
         assert caller.patientRegister(exchange)
@@ -67,7 +67,10 @@ class API extends TestSuite{
 
     @Test
     void patientDischarge() {
-        assert caller.patientDischarge()
+        dummy.hospitalNumber = '12'
+        message = gen.createMessage('A03', dummy, '2.4')
+        exchange.in.body = message
+        assert caller.patientDischarge(exchange)
     }
 
     @Test

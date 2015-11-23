@@ -9,7 +9,7 @@ class eObsQueries {
         return true
     }
 
-    def patientExists() {
+    Boolean patientExists() {
         return true
     }
 

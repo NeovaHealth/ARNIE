@@ -1,13 +1,10 @@
 package uk.co.neovahealth.ARNIE
 
-import groovy.json.JsonSlurper
 import groovyx.net.http.RESTClient
 import org.apache.camel.Exchange
 import groovy.json.JsonBuilder
 
 import static groovyx.net.http.ContentType.TEXT
-import static groovyx.net.http.ContentType.JSON
-
 
 /**
  * Created by gregorlenz on 06/11/15.
@@ -16,7 +13,6 @@ class eObsCalls extends ADTProcessing{
     def url = 'http://localhost:8069/'
     def client = new RESTClient(url)
     def loginBody = ["username": "adt", "password": "adt", "database": "nhclinical"]
-    def hosp_number, patient_id, given_name, family_name, dob
 
     def json = new JsonBuilder()
     def databuilder = new JsonBuilder()
@@ -24,7 +20,7 @@ class eObsCalls extends ADTProcessing{
     def total = json data: data, patient_id: '10'
 
 
-    def login() {
+    boolean login() {
         client.post(path: 'mobile/login', query: loginBody) { resp, data ->
             assert !data.text.contains('invalid')
             if (resp.status == 200 && !data.text.contains('invalid')) true
@@ -33,6 +29,7 @@ class eObsCalls extends ADTProcessing{
     }
 
     Boolean patientRegister(Exchange inflight) {
+        login()
         data = databuilder given_name: 'Arthur', family_name: 'Nudge'
         json patient_id: getHospitalNumber(inflight), data: data
 
@@ -69,7 +66,7 @@ class eObsCalls extends ADTProcessing{
         return true
     }
 
-    def patientUpdate() {
+    Boolean patientUpdate() {
         return true
     }
 }

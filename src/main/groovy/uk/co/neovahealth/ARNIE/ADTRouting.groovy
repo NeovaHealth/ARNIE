@@ -36,7 +36,6 @@ class ADTRouting extends SpringRouteBuilder {
         def caller = new eObsCalls()
         def queries = new eObsQueries()
         Predicate isA01 = header('triggerEvent').isEqualTo('A01')
-        Predicate patientExists = queries.patientExists().is(true)
 
         String hl7listener = "direct:hl7listener"
         String hl7router = "direct:hl7router"
@@ -72,13 +71,18 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(updateOrCreatePatient)
             .choice()
-                .when(isA01).process(caller.login()).otherwise().end()
+                .when(isA01).to("bean:eObsCalls?method=patientUpdate")
+                .otherwise().to("bean:eObsCalls?method=patientRegister")
+                //process("patientUpdate")
+                //.otherwise().end()
                 //.when(simple(queries.patientExists(${body}).isEqualTo(true)).process(caller.login())
                 //.otherwise().end()
 
 
         from(admit).routeId("admit")
-            .transform({it -> it})
+            .choice()
+                .when(isA01).to(caller.login())
+                .otherwise().to(caller.login())
 
         from(transfer)
             .transform({it -> it})

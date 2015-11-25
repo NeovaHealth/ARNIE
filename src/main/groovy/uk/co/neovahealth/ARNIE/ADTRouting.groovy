@@ -60,9 +60,9 @@ class ADTRouting extends SpringRouteBuilder {
             .setHeader("triggerEvent", {it.in.body.getTriggerEvent()})
             .setHeader("visitNameString", {it.in.body.MSH[4].value})
             //.setHeader("data", {inbound -> inbound.in[Message].toString()})
+            .to(hl7router)
             .transform({it -> it.in.body.generateACK()})
             //.marshal(hl7)
-            .to(hl7router)
 
         from(hl7router)
             .validate(messageConforms())

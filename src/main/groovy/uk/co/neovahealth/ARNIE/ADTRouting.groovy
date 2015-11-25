@@ -71,8 +71,8 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(updateOrCreatePatient)
             .choice()
-                .when(isA01).to("bean:eObsCalls?method=patientUpdate")
-                .otherwise().to("bean:eObsCalls?method=patientRegister")
+                .when(isA01).to("bean:eObsCalls?method=login")
+                .otherwise().to("bean:eObsCalls?method=login")
                 //process("patientUpdate")
                 //.otherwise().end()
                 //.when(simple(queries.patientExists(${body}).isEqualTo(true)).process(caller.login())
@@ -81,8 +81,8 @@ class ADTRouting extends SpringRouteBuilder {
 
         from(admit).routeId("admit")
             .choice()
-                .when(isA01).to(caller.login())
-                .otherwise().to(caller.login())
+                .when(isA01).to("bean:eObsCalls?method=login")
+                .otherwise().to("bean:eObsCalls?method=login")
 
         from(transfer)
             .transform({it -> it})

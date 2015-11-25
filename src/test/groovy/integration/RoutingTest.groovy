@@ -1,6 +1,7 @@
 package integration
 
 import ca.uhn.hl7v2.model.Message
+import org.apache.camel.ExchangePattern
 
 /**
  * Created by gregorlenz on 16/09/15.
@@ -60,15 +61,16 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA01() throws IOException, InterruptedException {
-        //Resource input  = new ClassPathResource("/msg-01.hl7")
+        Resource input  = new ClassPathResource("/msg-01.hl7")
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
         def msg01 = gen.createMessage('A01', admitPatient, '2.2')
         admitEndpoint.expectedMessageCount(1)
+        patientUpdateEndpoint.expectedMessageCount(1)
         transferEndpoint.expectedMessageCount(0)
 
-        answer = template.requestBody("direct:hl7listener", msg01.encode())
+        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input.getInputStream())
 
         assert dummy1.getClass() == Patient
         assert answer.MSA[1].value == 'AA'

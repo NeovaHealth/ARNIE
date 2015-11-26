@@ -33,7 +33,6 @@ class ADTRouting extends SpringRouteBuilder {
         hl7.setHapiContext(context)
 
 
-        def caller = new eObsCalls()
         def queries = new eObsQueries()
         Predicate isA01 = header('triggerEvent').isEqualTo('A01')
 
@@ -49,9 +48,6 @@ class ADTRouting extends SpringRouteBuilder {
         String updateOrCreateVisit = "direct:updateOrCreateVisit"
         String detectHistorical = "direct:detectHistorical"
         String patientRegister = "direct:register"
-
-
-        String msgLogging = "direct:msgLogging"
         String msgHistory = "msgHistory"
 
         //entry point
@@ -93,17 +89,11 @@ class ADTRouting extends SpringRouteBuilder {
         from(patientRegister)
             .to("bean:eObsCalls?method=patientRegister")
 
-        from(msgLogging)
-            .unmarshal(hl7)
-            .to(msgHistory)
-
         from(detectHistorical)
             .transform({it -> it})
 
         from(updateOrCreateVisit)
             .transform({it -> it})
-
-
 
     }
     

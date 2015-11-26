@@ -69,21 +69,13 @@ class ADTRouting extends SpringRouteBuilder {
             .to("routingSlip")
             .to(msgHistory)
 
-        from(updateOrCreatePatient)
+        from(updateOrCreatePatient).routeId("UpdateOrCreate")
             .choice()
-                .when(method(queries, "patientExists")).to("bean:eObsCalls?method=login")
-                .otherwise().stop()
-                //method("bean:eObsQueries?method=patientExists")
-                //process("patientUpdate")
-                //.otherwise().end()
-                //.when(simple(queries.patientExists(${body}).isEqualTo(true)).process(caller.login())
-                //.otherwise().end()
-
+                .when(method(queries, "patientExists")).to("bean:eObsCalls?method=patientUpdate")
+                .otherwise().to("bean:eObsCalls?method=patientRegister")
 
         from(admit).routeId("admit")
-            .choice()
-                .when(isA01).to("bean:eObsCalls?method=login")
-                .otherwise().stop()
+            .to("bean:eObsCalls?method=patientAdmit")
 
         from(transfer)
             .choice()

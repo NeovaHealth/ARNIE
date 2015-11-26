@@ -41,12 +41,12 @@ class eObsCalls extends ADTProcessing{
     }
 
 
-    def patientAdmit() {
-        return true
+    void patientAdmit(Exchange inflight) {
+        return
     }
 
-    def patientTransfer() {
-        return true
+    void patientTransfer() {
+        return
     }
 
     def patientDischarge(Exchange inflight) {
@@ -62,11 +62,11 @@ class eObsCalls extends ADTProcessing{
         return false
     }
 
-    def patientNew() {
-        return true
+    void patientNew() {
+        return
     }
 
-    Boolean patientUpdate() {
-        return true
+    void patientUpdate() {
+        return
     }
 }

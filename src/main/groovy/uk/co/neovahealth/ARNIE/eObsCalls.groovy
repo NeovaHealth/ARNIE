@@ -28,7 +28,7 @@ class eObsCalls extends ADTProcessing{
         }
     }
 
-    Boolean patientRegister(Exchange inflight) {
+    void patientRegister(Exchange inflight) {
         login()
         data = databuilder given_name: 'Arthur', family_name: 'Nudge'
         json patient_id: getHospitalNumber(inflight), data: data
@@ -36,7 +36,6 @@ class eObsCalls extends ADTProcessing{
         client.post(path: 'adt/v1/patient/register', body: json.toString(), requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
             assert data.status == 'success'
-            if (resp.status == 200) true
         }
     }
 

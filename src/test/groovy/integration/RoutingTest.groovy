@@ -34,15 +34,23 @@ class RoutingTest extends CamelSpringTestSupport{
     @Override
     public String isMockEndpoints(){
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|" +
-                "(direct:updateVisit)|(direct:updateOrCreateVisit)|(direct:updateOrCreatePatient))";
+                "(direct:updateVisit)|(direct:updateOrCreateVisit)|(direct:updateOrCreatePatient)|(direct:register))";
     }
 
     MessageGenerator gen
 
+    Random random = new Random()
+    def hospNumb = ''
     Patient dummy1, dummy2
 
-    MockEndpoint admitEndpoint, transferEndpoint, dischargeEndpoint, visitUpdateEndpoint, patientUpdateEndpoint
+    MockEndpoint admitEndpoint, transferEndpoint, dischargeEndpoint, registerEndpoint, visitUpdateEndpoint, patientUpdateEndpoint
     Message answer
+
+    def createResult = {
+        if (!it) {  //Groovy truth: it == 0 is false
+            hospNumb = random.nextInt(10).toString()
+        } else {hospNumb += random.nextInt(10).toString()}
+    }
 
     @Before
     void setUp() {
@@ -50,9 +58,13 @@ class RoutingTest extends CamelSpringTestSupport{
 
         gen = new MessageGenerator()
 
-        dummy1 = new Patient(nhsNumber: 1223334444, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
+        6.times(createResult)
+
+
+        dummy1 = new Patient(nhsNumber: 1223334444, hospitalNumber: hospNumb, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
         admitEndpoint = getMockEndpoint("mock:direct:admit")
         transferEndpoint = getMockEndpoint("mock:direct:transfer")
+        registerEndpoint = getMockEndpoint("mock:direct:register")
         dischargeEndpoint = getMockEndpoint("mock:direct:discharge")
         visitUpdateEndpoint = getMockEndpoint("mock:direct:updateVisit")
         patientUpdateEndpoint = getMockEndpoint("mock:direct:updateOrCreatePatient")
@@ -100,6 +112,19 @@ class RoutingTest extends CamelSpringTestSupport{
         transferEndpoint.expectedMessageCount(0)
 
         answer = template.requestBody("direct:hl7listener", msg03.encode())
+
+        assert answer.MSA[1].value == 'AA'
+        assertMockEndpointsSatisfied()
+    }
+
+    @Test
+    void testA28() {
+        def msg28 = gen.createMessage('A28', dummy1, '2.4')
+        registerEndpoint.expectedMessageCount(1)
+        admitEndpoint.expectedMessageCount(0)
+        transferEndpoint.expectedMessageCount(0)
+
+        answer = template.requestBody("direct:hl7listener", msg28.encode())
 
         assert answer.MSA[1].value == 'AA'
         assertMockEndpointsSatisfied()

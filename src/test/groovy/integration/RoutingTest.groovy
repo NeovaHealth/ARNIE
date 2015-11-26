@@ -32,7 +32,7 @@ class RoutingTest extends CamelSpringTestSupport{
     }
 
     @Override
-    public String isMockEndpointsAndSkip(){
+    public String isMockEndpoints(){
         return "((direct:error)|(direct:admit)|(direct:transfer)|(direct:discharge)|(direct:updatePatient)|" +
                 "(direct:updateVisit)|(direct:updateOrCreateVisit)|(direct:updateOrCreatePatient))";
     }

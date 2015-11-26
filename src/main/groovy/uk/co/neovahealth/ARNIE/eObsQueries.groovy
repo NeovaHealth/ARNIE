@@ -5,7 +5,7 @@ package uk.co.neovahealth.ARNIE
  */
 class eObsQueries {
 
-    def visitExists() {
+    Boolean visitExists() {
         return true
     }
 

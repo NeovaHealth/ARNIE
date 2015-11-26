@@ -20,11 +20,11 @@ class eObsCalls extends ADTProcessing{
     def total = json data: data, patient_id: '10'
 
 
-    boolean login() {
+    void login() {
         client.post(path: 'mobile/login', query: loginBody) { resp, data ->
             assert !data.text.contains('invalid')
-            if (resp.status == 200 && !data.text.contains('invalid')) true
-            else false
+            /*if (resp.status == 200 && !data.text.contains('invalid')) true
+            else false*/
         }
     }
 

@@ -42,6 +42,7 @@ class eObsCalls extends ADTProcessing{
 
 
     void patientAdmit(Exchange inflight) {
+        login()
         return
     }
 

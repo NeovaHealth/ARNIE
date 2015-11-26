@@ -61,7 +61,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
     @Test
     void testA01() throws IOException, InterruptedException {
-        Resource input  = new ClassPathResource("/msg-01.hl7")
+        //Resource input  = new ClassPathResource("/msg-01.hl7")
 
         Patient admitPatient = new Patient(nhsNumber: '0123456789', hospitalNumber:'012345', familyName:'Simpson',
                 givenName:'Homer', dateOfBirth: '19801231000000', sex:'M', address: 'High Street', admitLocation: '06BN')
@@ -70,7 +70,7 @@ class RoutingTest extends CamelSpringTestSupport{
         patientUpdateEndpoint.expectedMessageCount(1)
         transferEndpoint.expectedMessageCount(0)
 
-        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, input.getInputStream())
+        answer = template.sendBody("direct:hl7listener", ExchangePattern.InOut, msg01.encode())
 
         assert dummy1.getClass() == Patient
         assert answer.MSA[1].value == 'AA'

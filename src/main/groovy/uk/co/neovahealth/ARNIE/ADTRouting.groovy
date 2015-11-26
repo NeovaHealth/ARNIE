@@ -88,9 +88,7 @@ class ADTRouting extends SpringRouteBuilder {
                 .otherwise().to("bean:eObsCalls?method=patientRegister").to("bean:eObsCalls?method=patientDischarge")
 
         from(updateVisit)
-            .choice()
-                .when(isA01).to("bean:eObsCalls?method=login")
-                .otherwise().stop()
+            .to("bean:eObsCalls?method=visitUpdate")
 
         from(msgLogging)
             .unmarshal(hl7)

@@ -63,6 +63,10 @@ class eObsCalls extends ADTProcessing{
         return false
     }
 
+    void visitUpdate(Exchange inflight) {
+
+    }
+
     void patientNew() {
         return
     }

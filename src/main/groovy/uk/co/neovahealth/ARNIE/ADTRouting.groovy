@@ -90,6 +90,9 @@ class ADTRouting extends SpringRouteBuilder {
         from(updateVisit)
             .to("bean:eObsCalls?method=visitUpdate")
 
+        from(patientRegister)
+            .to("bean:eObsCalls?method=patientRegister")
+
         from(msgLogging)
             .unmarshal(hl7)
             .to(msgHistory)
@@ -100,12 +103,8 @@ class ADTRouting extends SpringRouteBuilder {
         from(updateOrCreateVisit)
             .transform({it -> it})
 
-        from(patientRegister)
-            .transform({it -> it})
 
-        from("direct:deadLetter")
-            .convertBodyTo(String)
-            .to('file:target/output')
+
     }
     
 }

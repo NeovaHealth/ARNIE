@@ -50,7 +50,7 @@ class eObsCalls extends ADTProcessing{
         return
     }
 
-    def patientDischarge(Exchange inflight) {
+    void patientDischarge(Exchange inflight) {
         login()
         json = new JsonBuilder()
         data = databuilder given_name: 'Arthur', family_name: 'Nudge'
@@ -59,9 +59,7 @@ class eObsCalls extends ADTProcessing{
         client.post(path: 'adt/v1/patient/discharge', body: json.toString(), requestContentType: TEXT) { resp, data ->
             assert resp.status == 200
             assert data.status == 'success'
-            if (resp.status == 200 && data.status == 'success') true
         }
-        return false
     }
 
     void visitUpdate(Exchange inflight) {

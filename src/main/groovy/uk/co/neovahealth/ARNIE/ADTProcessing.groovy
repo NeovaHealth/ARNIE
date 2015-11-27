@@ -13,4 +13,18 @@ class ADTProcessing {
     def getHospitalNumber(Exchange exchange) {
         exchange.in.body.PID[4][1].value
     }
+
+    def getNHSNumber(Exchange exchange) {
+
+    }
+
+    def getTimestamp(Exchange exchange) {
+
+    }
+
+    def getWardIdentifier(Exchange exchange) {
+
+    }
+
 }
+

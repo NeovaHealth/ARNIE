@@ -2,19 +2,17 @@ package integration
 
 import ca.uhn.hl7v2.model.Message
 import org.apache.camel.ExchangePattern
+import org.apache.camel.component.mock.MockEndpoint
 
 /**
  * Created by gregorlenz on 16/09/15.
  */
-import org.apache.camel.component.mock.MockEndpoint
 import org.apache.camel.test.spring.CamelSpringTestSupport
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.context.support.AbstractXmlApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
-import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.Resource
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestExecutionListeners
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
@@ -58,8 +56,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
         gen = new MessageGenerator()
 
-        6.times(createResult)
-
+        6.times(createResult) //create new random Hospital Number with 6 digits
 
         dummy1 = new Patient(nhsNumber: 1223334444, hospitalNumber: hospNumb, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
         admitEndpoint = getMockEndpoint("mock:direct:admit")

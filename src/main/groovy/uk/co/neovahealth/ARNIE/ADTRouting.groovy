@@ -4,6 +4,7 @@ import ca.uhn.hl7v2.DefaultHapiContext
 import ca.uhn.hl7v2.HapiContext
 import ca.uhn.hl7v2.Version
 import ca.uhn.hl7v2.validation.builder.ValidationRuleBuilder
+import org.apache.camel.LoggingLevel
 import org.apache.camel.Predicate
 import org.apache.camel.component.hl7.HL7DataFormat
 import org.apache.camel.spring.SpringRouteBuilder
@@ -34,7 +35,6 @@ class ADTRouting extends SpringRouteBuilder {
 
 
         def queries = new eObsQueries()
-        Predicate isA01 = header('triggerEvent').isEqualTo('A01')
 
         String hl7listener = "direct:hl7listener"
         String hl7router = "direct:hl7router"
@@ -53,6 +53,7 @@ class ADTRouting extends SpringRouteBuilder {
         //entry point
         from(hl7listener)
             .unmarshal(hl7)
+            .log(LoggingLevel.INFO, "Received new" + {it.in.header.CamelHl7TriggerEvent} + "Message for Hospital Number ")
             .setHeader("triggerEvent", {it.in.body.getTriggerEvent()})
             .setHeader("visitNameString", {it.in.body.MSH[4].value})
             //.setHeader("data", {inbound -> inbound.in[Message].toString()})

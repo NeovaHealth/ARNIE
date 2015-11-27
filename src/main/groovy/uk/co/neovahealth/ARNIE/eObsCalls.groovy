@@ -39,9 +39,10 @@ class eObsCalls extends ADTProcessing{
         }
     }
 
-
     void patientAdmit(Exchange inflight) {
         login()
+        json = new JsonBuilder()
+
         return
     }
 
@@ -50,6 +51,7 @@ class eObsCalls extends ADTProcessing{
     }
 
     def patientDischarge(Exchange inflight) {
+        login()
         json = new JsonBuilder()
         data = databuilder given_name: 'Arthur', family_name: 'Nudge'
         json patient_id: getHospitalNumber(inflight), data: data

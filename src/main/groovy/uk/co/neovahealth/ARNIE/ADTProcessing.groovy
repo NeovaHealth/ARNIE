@@ -26,5 +26,6 @@ class ADTProcessing {
 
     }
 
+    def getValueFromFields = { exchange, field, x=1, y=1, z=1 -> return exchange."$field"[x][y][z].value }
 }
 

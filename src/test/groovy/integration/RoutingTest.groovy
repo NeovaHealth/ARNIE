@@ -38,13 +38,13 @@ class RoutingTest extends CamelSpringTestSupport{
     MessageGenerator gen
 
     Random random = new Random()
-    def hospNumb = ''
+    def hospNumb, nhsNumb = ''
     Patient dummy1, dummy2
 
     MockEndpoint admitEndpoint, transferEndpoint, dischargeEndpoint, registerEndpoint, visitUpdateEndpoint, patientUpdateEndpoint
     Message answer
 
-    def createResult = {
+    def shuffle = {
         if (!it) {  //Groovy truth: it == 0 is false
             hospNumb = random.nextInt(10).toString()
         } else {hospNumb += random.nextInt(10).toString()}
@@ -56,7 +56,7 @@ class RoutingTest extends CamelSpringTestSupport{
 
         gen = new MessageGenerator()
 
-        6.times(createResult) //create new random Hospital Number with 6 digits
+        6.times(shuffle) //create new random Hospital Number with 6 digits
 
         dummy1 = new Patient(nhsNumber: 1223334444, hospitalNumber: hospNumb, familyName: 'Dummy', givenName: 'Dillon', dateOfBirth: '19441231090000', sex:'M', address: 'Main Street', admitLocation: '08BS')
         admitEndpoint = getMockEndpoint("mock:direct:admit")

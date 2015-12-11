@@ -89,6 +89,9 @@ exclude(module: 'jaxb-core')
     compile group: 'info.cukes', name: 'cucumber-groovy', version: cucumberVersion
     compile group: 'info.cukes', name: 'cucumber-jvm-deps', version:'1.0.5'
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+    compile 'org.codehaus.groovy:groovy-xmlrpc:0.8'
+    compile 'com.github.briandilley.jsonrpc4j:jsonrpc4j:1.2.0'
+    compile 'org.slf4j:slf4j-simple:1.7.13'
     testCompile group: 'org.apache.camel', name: 'camel-test', version: camelVersion
     testCompile group: 'commons-logging', name: 'commons-logging', version:'1.2'
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion

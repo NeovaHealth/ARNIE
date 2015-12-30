@@ -48,7 +48,18 @@ http://openehealth.org/schema/ipf-commons-core.xsd http://www.springframework.or
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="vm://amq-broker"/>
+        <!--<property name=""-->
+    </bean>
+    
+    <bean id="amq-broker" class="org.apache.activemq.xbean.BrokerFactoryBean">
+        <property name="config" value="broker-config.xml"/>
+        <property name="start" value="true"/>
+    </bean>
+
     <bean id="myCustomRules" class="uk.co.neovahealth.ARNIE.SampleRulesBuilder"/>
+
 
 </beans>
 

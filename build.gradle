@@ -54,6 +54,7 @@ def ipfVersion = '3.0.2'
 def hapiVersion = '2.2'
 def cucumberVersion = '1.2.4'
 def springVersion = '4.2.3.RELEASE'
+def activemqVersion = '5.13.0'
 
 dependencies {
     compile(group: 'org.apache.camel', name: 'camel-spring', version: camelVersion) {
@@ -89,6 +90,8 @@ exclude(module: 'jaxb-core')
     compile group: 'info.cukes', name: 'cucumber-groovy', version: cucumberVersion
     compile group: 'info.cukes', name: 'cucumber-jvm-deps', version:'1.0.5'
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+    compile group: 'org.apache.servicemix', name: 'activemq', version: activemqVersion
+    compile group: 'org.apache.activemq', name: 'activemq-camel', version: activemqVersion
     testCompile group: 'org.apache.camel', name: 'camel-test', version: camelVersion
     testCompile group: 'commons-logging', name: 'commons-logging', version:'1.2'
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion

@@ -2,8 +2,11 @@ apply plugin: 'groovy'
 //apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'idea'
-//apply plugin: "jacoco"
+apply plugin: "jacoco"
 apply plugin: 'application'
+apply plugin: 'org.sonarqube'
+apply plugin: 'cobertura'
+
 
 group = 'uk.co.neovahealth.ARNIE'
 version = '1.0-SNAPSHOT'
@@ -38,17 +41,32 @@ task applicationCodeCoverageReport(type:JacocoReport){
     sourceSets sourceSets.main
 }*/
 
+sonarqube {
+    properties {
+        property "sonar.projectName", "Java :: Simple Project :: SonarQube Scanner for Gradle"
+        property "sonar.projectKey", "org.sonarqube:java-gradle-simple"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
+}
+
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "net.saliman:gradle-cobertura-plugin:2.2.2"
         classpath 'org.gradle.api.plugins:gradle-clover-plugin:0.8.1'
+        classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
     }
 }
 
-apply plugin: 'cobertura'
+test {
+    ignoreFailures = true
+}
+
 cobertura {
     coverageFormats = ['xml', 'html']
     coverageIncludes = ['**/*.java', '**/*.groovy']
